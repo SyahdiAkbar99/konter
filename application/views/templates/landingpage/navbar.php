@@ -32,7 +32,11 @@
                         </li>
 
                         <li>
-                            <a href="<?= base_url('auth/logout') ?>">Logout <i class="fa fa-sign-out"></i></a>
+                            <a href="contact.html">Contact</a>
+                        </li>
+
+                        <li>
+                            <a href="<?= base_url('auth') ?>">Login <i class="fa fa-sign-in"></i></a>
                         </li>
                     </ul>
                 </div>
