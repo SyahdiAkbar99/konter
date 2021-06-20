@@ -13,6 +13,7 @@ class Pembeli extends CI_Controller
     public function index()
     {
         $data['title'] = 'Home';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $this->load->view('templates/pembeli/header', $data);
         $this->load->view('templates/pembeli/navbar', $data);
         $this->load->view('pembeli/index', $data);

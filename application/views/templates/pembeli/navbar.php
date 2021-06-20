@@ -23,16 +23,18 @@
                             <a href="<?= base_url('pembeli') ?>">Home</a>
                         </li>
 
-                        <li>
+                        <!-- <li>
                             <a href="product.html">Shop</a>
-                        </li>
+                        </li> -->
 
                         <li>
                             <a href="about.html">About</a>
                         </li>
-
                         <li>
-                            <a href="<?= base_url('auth/logout') ?>">Logout <i class="fa fa-sign-out"></i></a>
+                            <a href="contact.html">Contact</a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('Auth/logout') ?>">Logout <i class="fa fa-sign-out"></i></a>
                         </li>
                     </ul>
                 </div>
@@ -53,7 +55,7 @@
     <div class="wrap-header-mobile">
         <!-- Logo moblie -->
         <div class="logo-mobile">
-            <a href="index.html"><img src="<?= base_url('assets/user/img/icons/logo-01.png') ?>" alt="IMG-LOGO"></a>
+            <a href="<?= base_url('Pembeli') ?>"><img src="<?= base_url('assets/user/img/icons/logo-01.png') ?>" alt="IMG-LOGO"></a>
         </div>
 
         <!-- Icon header -->
@@ -82,27 +84,29 @@
 
         <ul class="main-menu-m">
             <li>
-                <a href="index.html">Home</a>
+                <a href="<?= base_url('Pembeli') ?>">Home</a>
             </li>
 
-            <li>
+            <!-- <li>
                 <a href="product.html">Shop</a>
-            </li>
+            </li> -->
 
-            <li>
+            <!-- <li>
                 <a href="shoping-cart.html">Features</a>
-            </li>
+            </li> -->
 
-            <li>
+            <!-- <li>
                 <a href="blog.html">Blog</a>
-            </li>
+            </li> -->
 
             <li>
                 <a href="about.html">About</a>
             </li>
-
             <li>
                 <a href="contact.html">Contact</a>
+            </li>
+            <li>
+                <a href="<?= base_url('Auth/logout') ?>">Logout <i class="fa fa-sign-out"></i></a>
             </li>
         </ul>
     </div>
