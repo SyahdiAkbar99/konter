@@ -73,7 +73,7 @@ class Admin extends CI_Controller
         if ($tb['user']['role_id'] == 2) {
             $old_image = $tb['user']['image'];
             if ($old_image != 'default.png') {
-                @unlink(FCPATH . 'assets/admin/img/profile/seller/' . $old_image);
+                @unlink(FCPATH . 'assets/admin/img/profile/' . $old_image);
             }
         } else {
             $old_image = $tb['user']['image'];
