@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 20 Jun 2021 pada 15.34
+-- Waktu pembuatan: 22 Jun 2021 pada 18.13
 -- Versi server: 10.4.11-MariaDB
 -- Versi PHP: 7.3.15
 
@@ -29,27 +29,71 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `barang` (
-  `id_barang` varchar(4) NOT NULL,
-  `nama_barang` varchar(20) NOT NULL,
-  `id_jenis` varchar(20) NOT NULL,
-  `harga` double(12,2) NOT NULL,
-  `stok` int(4) NOT NULL,
-  `foto` text NOT NULL
+  `id` int(11) NOT NULL,
+  `kode` varchar(128) DEFAULT NULL,
+  `name` varchar(128) DEFAULT NULL,
+  `image` varchar(256) DEFAULT NULL,
+  `jenis` varchar(128) DEFAULT NULL,
+  `harga` int(11) DEFAULT NULL,
+  `stok` int(4) DEFAULT NULL,
+  `tanggal` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `barang`
+--
+
+INSERT INTO `barang` (`id`, `kode`, `name`, `image`, `jenis`, `harga`, `stok`, `tanggal`, `user_id`) VALUES
+(1, '22/06/2021 -BG- 001', 'Earphone', 'letter_E.png', 'Earphone Jack', 25000, 10, '2021-06-22 14:10:37', 2),
+(2, '22/06/2021 -BG- 002', 'Mouse', 'letter_M.png', 'Mouse', 16000, 10, '2021-06-22 14:11:13', 2),
+(3, '22/06/2021 -BG- 003', 'Laptop', 'letter_L.png', 'Electronic', 5000000, 15, '2021-06-22 14:51:41', 2);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `beli`
+-- Struktur dari tabel `barang_keluar`
 --
 
-CREATE TABLE `beli` (
-  `id_beli` varchar(8) NOT NULL,
-  `tanggal_beli` date NOT NULL,
-  `id_user` varchar(8) NOT NULL,
-  `total` double(12,2) NOT NULL,
-  `status` enum('dipesan','dibayar','diterima','') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `barang_keluar` (
+  `id` int(11) NOT NULL,
+  `name` varchar(128) NOT NULL,
+  `stok` int(11) NOT NULL,
+  `barang_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Trigger `barang_keluar`
+--
+DELIMITER $$
+CREATE TRIGGER `t__keluar` AFTER INSERT ON `barang_keluar` FOR EACH ROW BEGIN
+	UPDATE barang SET stok = stok - NEW.stok WHERE id = NEW.barang_id;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `barang_masuk`
+--
+
+CREATE TABLE `barang_masuk` (
+  `id` int(11) NOT NULL,
+  `name` varchar(128) NOT NULL,
+  `stok` int(11) NOT NULL,
+  `barang_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Trigger `barang_masuk`
+--
+DELIMITER $$
+CREATE TRIGGER `t_masuk` AFTER INSERT ON `barang_masuk` FOR EACH ROW BEGIN
+	UPDATE barang SET stok = jumlah + NEW.stok WHERE id = NEW.barang_id;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -78,28 +122,22 @@ INSERT INTO `data_banner` (`id`, `name`, `image`, `descript`, `banner_date`, `ur
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `detail_beli`
+-- Struktur dari tabel `detail_transaksi`
 --
 
-CREATE TABLE `detail_beli` (
-  `id_beli` varchar(8) NOT NULL,
-  `id_barang` varchar(9) NOT NULL,
-  `jumlah_beli` int(8) NOT NULL,
-  `sub_total` double(12,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `detail_jual`
---
-
-CREATE TABLE `detail_jual` (
-  `id_jual` varchar(8) NOT NULL,
-  `id_barang` varchar(8) NOT NULL,
-  `jumlah_jual` int(10) NOT NULL,
-  `sub_total` double(12,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `detail_transaksi` (
+  `id_detail` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `name` varchar(128) NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `harga` int(11) NOT NULL,
+  `image` varchar(256) NOT NULL,
+  `total` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `tanggal_detail` datetime NOT NULL,
+  `penjual_id` int(11) NOT NULL,
+  `transaksi_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -108,41 +146,45 @@ CREATE TABLE `detail_jual` (
 --
 
 CREATE TABLE `jenis` (
-  `id_jenis` varchar(3) NOT NULL,
-  `nama_jenis` varchar(20) NOT NULL
+  `id` int(11) NOT NULL,
+  `name` varchar(128) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `jenis`
+--
+
+INSERT INTO `jenis` (`id`, `name`) VALUES
+(1, 'Earphone Jack'),
+(2, 'Mouse'),
+(3, 'Electronic'),
+(4, 'Electronic'),
+(5, 'Electronic');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `jual`
+-- Struktur dari tabel `transaksi`
 --
 
-CREATE TABLE `jual` (
-  `id_jual` varchar(8) NOT NULL,
-  `tanggal_jual` date NOT NULL,
-  `id_user` varchar(8) NOT NULL,
-  `nama_benda` varchar(20) NOT NULL,
-  `alamat_kirim` text NOT NULL,
-  `no_telepon` varchar(15) NOT NULL,
-  `total` double(12,2) NOT NULL,
-  `status` enum('dipesan','dikirim','diterima','ditolak','dibayar') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `keranjang`
---
-
-CREATE TABLE `keranjang` (
-  `id_keranjang` varchar(8) NOT NULL,
-  `waktu_keranjang` datetime NOT NULL,
-  `id_user` varchar(8) NOT NULL,
-  `id_barang` varchar(20) NOT NULL,
-  `jumlah_jual` int(10) NOT NULL,
-  `sub_total` double(12,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `transaksi` (
+  `id` int(11) NOT NULL,
+  `kode` varchar(128) NOT NULL,
+  `pembeli_id` int(11) DEFAULT NULL,
+  `pembeli_name` varchar(128) DEFAULT NULL,
+  `pembeli_email` varchar(256) DEFAULT NULL,
+  `pembeli_bank` varchar(128) DEFAULT NULL,
+  `pembeli_rekening` varchar(128) DEFAULT NULL,
+  `pembeli_telp` char(14) DEFAULT NULL,
+  `penjual_id` int(11) DEFAULT NULL,
+  `penjual_name` varchar(128) DEFAULT NULL,
+  `penjual_bank` varchar(128) DEFAULT NULL,
+  `penjual_rekening` int(128) DEFAULT NULL,
+  `penjual_telp` char(14) NOT NULL,
+  `total_transaksi` int(11) DEFAULT NULL,
+  `tanggal_transaksi` datetime DEFAULT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -171,7 +213,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `name`, `email`, `image`, `password`, `no_telp`, `alamat`, `role_id`, `is_active`, `date_created`, `no_rekening`, `nama_bank`) VALUES
 (1, 'Admin', 'admin@gmail.com', 'avatar.png', '$2y$10$OCvmvrtPHbClwbGjqQY.4u1s2jGquK80tMMqd.nWlDNqBaxohnJXy', '6281336787990', 'Jl Admin 221', 1, 1, 1621959515, '-', '-'),
-(2, 'Penjual', 'penjual@gmail.com', 'default.png', '$2y$10$osgIK9gqBofOfu/tgQB9bOkI5wrFit2lutKDGzty2D2lBOZTYNt8a', '6287880900655', 'Jl Penjual 887', 2, 1, 1621959595, '0007000100020003', 'BRI'),
+(2, 'Penjual', 'penjual@gmail.com', 'letter_A.png', '$2y$10$xJB2/kbPXo6koCs9N0Tg1e9zMtEKNDWcK2KZghxeDm9RZ5UxdVJWa', '6287880900666', 'Jl Penjual 887', 2, 1, 1621959595, '0007000100020003', 'BRI'),
 (3, 'Pembeli', 'pembeli@gmail.com', 'default.png', '$2y$10$EtzFzgWxjmZb/WkpR2ovaOkcU6O.y1VhG.BHP/yrrDG917/ipFNYG', '6285000988123', 'Jl Pembeli 223', 3, 1, 1621959665, '-', '-');
 
 -- --------------------------------------------------------
@@ -266,7 +308,9 @@ INSERT INTO `user_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `urutan`, 
 (7, 1, 'Change Password', 'Admin/change_password', 'fa fa-fw fa-key', 10, 1),
 (8, 2, 'Change Password', 'Penjual/change_password', 'fa fa-fw fa-key', 10, 1),
 (9, 1, 'Kelola User', 'Admin/kelola_user', 'fas fa-fw fa-users', 2, 1),
-(10, 1, 'Kelola Banner', 'Admin/kelola_banner', 'fas fa-fw fa-folder', 3, 1);
+(10, 1, 'Kelola Banner', 'Admin/kelola_banner', 'fas fa-fw fa-folder', 3, 1),
+(11, 2, 'Kelola Produk', 'Penjual/kelola_produk', 'fas fa-fw fa-toolbox', 2, 1),
+(12, 2, 'Riwayat Penjualan', 'Penjual/riwayat_penjualan', 'fas fa-fw fa-money-bill', 3, 1);
 
 --
 -- Indexes for dumped tables
@@ -276,13 +320,19 @@ INSERT INTO `user_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `urutan`, 
 -- Indeks untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  ADD PRIMARY KEY (`id_barang`);
+  ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `beli`
+-- Indeks untuk tabel `barang_keluar`
 --
-ALTER TABLE `beli`
-  ADD PRIMARY KEY (`id_beli`);
+ALTER TABLE `barang_keluar`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `barang_masuk`
+--
+ALTER TABLE `barang_masuk`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeks untuk tabel `data_banner`
@@ -291,22 +341,22 @@ ALTER TABLE `data_banner`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `detail_transaksi`
+--
+ALTER TABLE `detail_transaksi`
+  ADD PRIMARY KEY (`id_detail`);
+
+--
 -- Indeks untuk tabel `jenis`
 --
 ALTER TABLE `jenis`
-  ADD PRIMARY KEY (`id_jenis`);
+  ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `jual`
+-- Indeks untuk tabel `transaksi`
 --
-ALTER TABLE `jual`
-  ADD PRIMARY KEY (`id_jual`);
-
---
--- Indeks untuk tabel `keranjang`
---
-ALTER TABLE `keranjang`
-  ADD PRIMARY KEY (`id_keranjang`);
+ALTER TABLE `transaksi`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeks untuk tabel `user`
@@ -343,10 +393,46 @@ ALTER TABLE `user_sub_menu`
 --
 
 --
+-- AUTO_INCREMENT untuk tabel `barang`
+--
+ALTER TABLE `barang`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT untuk tabel `barang_keluar`
+--
+ALTER TABLE `barang_keluar`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `barang_masuk`
+--
+ALTER TABLE `barang_masuk`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT untuk tabel `data_banner`
 --
 ALTER TABLE `data_banner`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT untuk tabel `detail_transaksi`
+--
+ALTER TABLE `detail_transaksi`
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `jenis`
+--
+ALTER TABLE `jenis`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT untuk tabel `transaksi`
+--
+ALTER TABLE `transaksi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
@@ -376,7 +462,7 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT untuk tabel `user_sub_menu`
 --
 ALTER TABLE `user_sub_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
