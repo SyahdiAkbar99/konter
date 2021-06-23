@@ -55,11 +55,11 @@ class Auth extends CI_Controller
                     ];
                     $this->session->set_userdata($data);
                     if ($user['role_id'] == 1) {
-                        redirect('admin');
+                        redirect('Admin');
                     } elseif ($user['role_id'] == 2) {
-                        redirect('penjual');
+                        redirect('Penjual');
                     } else {
-                        redirect('pembeli');
+                        redirect('Pembeli');
                     }
                 } else {
                     $this->session->set_flashdata(
@@ -71,7 +71,7 @@ class Auth extends CI_Controller
                             </button>
                     </div>'
                     );
-                    redirect('auth');
+                    redirect('Auth');
                 }
             } else {
                 $this->session->set_flashdata(
@@ -173,7 +173,7 @@ class Auth extends CI_Controller
                         </button>
                 </div>'
                 );
-                redirect('auth');
+                redirect('Auth');
             } else {
                 $this->session->set_flashdata(
                     'message',
@@ -184,7 +184,7 @@ class Auth extends CI_Controller
                         </button>
                 </div>'
                 );
-                redirect('auth');
+                redirect('Auth');
             }
         }
     }
@@ -210,10 +210,10 @@ class Auth extends CI_Controller
 
         if ($type == 'verify') {
             $this->email->subject('Verifikasi Akun');
-            $this->email->message('Klik link berikut untuk verifikasi akun anda : <a href="' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Aktifkan akun anda sekarang sebelum 24 jam</a>');
+            $this->email->message('Klik link berikut untuk verifikasi akun anda : <a href="' . base_url() . 'Auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Aktifkan akun anda sekarang sebelum 24 jam</a>');
         } elseif ($type == 'forgot') {
             $this->email->subject('Reset Password');
-            $this->email->message('Klik link berikut untuk reset password : <a href="' . base_url() . 'auth/reset_password?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Reset sekarang password anda sebelum 24 jam</a>');
+            $this->email->message('Klik link berikut untuk reset password : <a href="' . base_url() . 'Auth/reset_password?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Reset sekarang password anda sebelum 24 jam</a>');
         }
 
         if ($this->email->send()) {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 22 Jun 2021 pada 18.13
+-- Waktu pembuatan: 23 Jun 2021 pada 20.18
 -- Versi server: 10.4.11-MariaDB
 -- Versi PHP: 7.3.15
 
@@ -46,8 +46,15 @@ CREATE TABLE `barang` (
 
 INSERT INTO `barang` (`id`, `kode`, `name`, `image`, `jenis`, `harga`, `stok`, `tanggal`, `user_id`) VALUES
 (1, '22/06/2021 -BG- 001', 'Earphone', 'letter_E.png', 'Earphone Jack', 25000, 10, '2021-06-22 14:10:37', 2),
-(2, '22/06/2021 -BG- 002', 'Mouse', 'letter_M.png', 'Mouse', 16000, 10, '2021-06-22 14:11:13', 2),
-(3, '22/06/2021 -BG- 003', 'Laptop', 'letter_L.png', 'Electronic', 5000000, 15, '2021-06-22 14:51:41', 2);
+(2, '22/06/2021 -BG- 002', 'Mouse', 'letter_M.png', 'Mouse', 16000, 9, '2021-06-22 14:11:13', 2),
+(3, '22/06/2021 -BG- 003', 'Laptop', 'letter_L.png', 'Electronic', 5000000, 15, '2021-06-22 14:51:41', 2),
+(6, '23/06/2021 -BG- 001', 'Vortex Vanwuisher', 'letter_V.png', 'Vortex', 23000, 10, '2021-06-23 13:11:22', 2),
+(7, '23/06/2021 -BG- 002', 'Lasegar', 'letter_L1.png', 'Minuman', 14000, 20, '2021-06-23 13:13:04', 2),
+(8, '23/06/2021 -BG- 003', 'Audiotron', 'letter_A.png', 'Electronic', 15000, 15, '2021-06-23 13:13:56', 2),
+(9, '23/06/2021 -BG- 004', 'Headphone', 'letter_H.png', 'Headphone', 27000, 16, '2021-06-23 13:15:12', 2),
+(10, '23/06/2021 -BG- 005', 'Advan S7', 'letter_A1.png', 'Handphone', 1500000, 20, '2021-06-23 13:19:59', 2),
+(11, '23/06/2021 -BG- 006', 'Samsung J5', 'letter_S.png', 'Handphone', 500000, 15, '2021-06-23 13:20:22', 2),
+(12, '23/06/2021 -BG- 007', 'Asus Tuf 1212', 'letter_A2.png', 'Laptop', 5000000, 13, '2021-06-23 15:38:26', 4);
 
 -- --------------------------------------------------------
 
@@ -90,7 +97,7 @@ CREATE TABLE `barang_masuk` (
 --
 DELIMITER $$
 CREATE TRIGGER `t_masuk` AFTER INSERT ON `barang_masuk` FOR EACH ROW BEGIN
-	UPDATE barang SET stok = jumlah + NEW.stok WHERE id = NEW.barang_id;
+	UPDATE barang SET stok = stok + NEW.stok WHERE id = NEW.barang_id;
 END
 $$
 DELIMITER ;
@@ -127,17 +134,26 @@ INSERT INTO `data_banner` (`id`, `name`, `image`, `descript`, `banner_date`, `ur
 
 CREATE TABLE `detail_transaksi` (
   `id_detail` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
+  `barang_id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
-  `jumlah` int(11) NOT NULL,
+  `stok` int(11) NOT NULL,
   `harga` int(11) NOT NULL,
-  `image` varchar(256) NOT NULL,
-  `total` int(11) NOT NULL,
-  `status` int(11) NOT NULL,
+  `image` varchar(256) DEFAULT NULL,
+  `total` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
   `tanggal_detail` datetime NOT NULL,
   `penjual_id` int(11) NOT NULL,
   `transaksi_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `detail_transaksi`
+--
+
+INSERT INTO `detail_transaksi` (`id_detail`, `barang_id`, `name`, `stok`, `harga`, `image`, `total`, `status`, `tanggal_detail`, `penjual_id`, `transaksi_id`) VALUES
+(5, 1, 'Earphone', 2, 25000, 'letter_F.png', 50000, 1, '2021-06-24 00:42:55', 2, 3),
+(6, 12, 'Asus Tuf 1212', 2, 5000000, 'letter_T.png', 10000000, 1, '2021-06-24 00:42:25', 4, 3),
+(7, 2, 'Mouse', 1, 16000, 'letter_R.png', 16000, 1, '2021-06-24 00:58:07', 2, 4);
 
 -- --------------------------------------------------------
 
@@ -159,7 +175,14 @@ INSERT INTO `jenis` (`id`, `name`) VALUES
 (2, 'Mouse'),
 (3, 'Electronic'),
 (4, 'Electronic'),
-(5, 'Electronic');
+(5, 'Electronic'),
+(6, 'Vortex'),
+(7, 'Minuman'),
+(8, 'Electronic'),
+(9, 'Headphone'),
+(10, 'Handphone'),
+(11, 'Handphone'),
+(12, 'Laptop');
 
 -- --------------------------------------------------------
 
@@ -180,11 +203,20 @@ CREATE TABLE `transaksi` (
   `penjual_name` varchar(128) DEFAULT NULL,
   `penjual_bank` varchar(128) DEFAULT NULL,
   `penjual_rekening` int(128) DEFAULT NULL,
-  `penjual_telp` char(14) NOT NULL,
+  `penjual_telp` char(14) DEFAULT NULL,
   `total_transaksi` int(11) DEFAULT NULL,
   `tanggal_transaksi` datetime DEFAULT NULL,
-  `status` int(11) NOT NULL
+  `status` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `transaksi`
+--
+
+INSERT INTO `transaksi` (`id`, `kode`, `pembeli_id`, `pembeli_name`, `pembeli_email`, `pembeli_bank`, `pembeli_rekening`, `pembeli_telp`, `penjual_id`, `penjual_name`, `penjual_bank`, `penjual_rekening`, `penjual_telp`, `total_transaksi`, `tanggal_transaksi`, `status`) VALUES
+(3, '23/06/2021 -ELC- 001', 3, 'Pembeli', 'pembeli@gmail.com', 'BNI', '0111099901110888', '6285000988123', 2, 'Penjual', 'BRI', 2147483647, '6287880900666', 10050000, '2021-06-24 00:42:55', 1),
+(4, '24/06/2021 -ELC- 001', 3, 'Pembeli', 'pembeli@gmail.com', 'BNI', '0111099901110888', '6285000988123', 2, 'Penjual', 'BRI', 2147483647, '6287880900666', 16000, '2021-06-24 00:58:07', 1),
+(5, '24/06/2021 -ELC- 002', 3, 'Pembeli', 'pembeli@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 23000, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -213,8 +245,10 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `name`, `email`, `image`, `password`, `no_telp`, `alamat`, `role_id`, `is_active`, `date_created`, `no_rekening`, `nama_bank`) VALUES
 (1, 'Admin', 'admin@gmail.com', 'avatar.png', '$2y$10$OCvmvrtPHbClwbGjqQY.4u1s2jGquK80tMMqd.nWlDNqBaxohnJXy', '6281336787990', 'Jl Admin 221', 1, 1, 1621959515, '-', '-'),
-(2, 'Penjual', 'penjual@gmail.com', 'letter_A.png', '$2y$10$xJB2/kbPXo6koCs9N0Tg1e9zMtEKNDWcK2KZghxeDm9RZ5UxdVJWa', '6287880900666', 'Jl Penjual 887', 2, 1, 1621959595, '0007000100020003', 'BRI'),
-(3, 'Pembeli', 'pembeli@gmail.com', 'default.png', '$2y$10$EtzFzgWxjmZb/WkpR2ovaOkcU6O.y1VhG.BHP/yrrDG917/ipFNYG', '6285000988123', 'Jl Pembeli 223', 3, 1, 1621959665, '-', '-');
+(2, 'Penjual', 'penjual@gmail.com', 'avatar4.png', '$2y$10$xJB2/kbPXo6koCs9N0Tg1e9zMtEKNDWcK2KZghxeDm9RZ5UxdVJWa', '6287880900666', 'Jl Penjual 887', 2, 1, 1621959595, '0007000100020003', 'BRI'),
+(3, 'Pembeli', 'pembeli@gmail.com', 'avatar3.png', '$2y$10$fE9TFkngBIsAWKOpGvj0Y.LOcDcVFjc0GMjax2RGM3fhyqaa8plci', '6285000988000', 'Jl Pembeli 223', 3, 1, 1621959665, '-', '-'),
+(4, 'Veronica', 'veronica11@gmail.com', 'user3-128x128.jpg', '$2y$10$pGw20NXc.G984ZrI9Itv7O5gysacVUmBfhOnZGF2R4ITqZiI.tTKG', '62628777000911', 'Jl Kutai No 9A Tamanbaru Banyuwangi', 2, 1, 1624462602, '0021001200110005', 'BANK PEMBANGUNAN DAERAH JAWA TIMUR'),
+(5, 'Vica', 'vica@gmail.com', 'default.png', '$2y$10$uDgLOLfkb0zuV9CLAs3cj.4ZLU8vYsqVnsPsmkbcvpN4HUPaDS.n.', '62897881231236', 'Jl Kutai No 9B Tamanbaru Banyuwangi', 3, 1, 1624472045, '-', '-');
 
 -- --------------------------------------------------------
 
@@ -396,19 +430,19 @@ ALTER TABLE `user_sub_menu`
 -- AUTO_INCREMENT untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_keluar`
 --
 ALTER TABLE `barang_keluar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_masuk`
 --
 ALTER TABLE `barang_masuk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT untuk tabel `data_banner`
@@ -420,25 +454,25 @@ ALTER TABLE `data_banner`
 -- AUTO_INCREMENT untuk tabel `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
-  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `jenis`
 --
 ALTER TABLE `jenis`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `user_access_menu`

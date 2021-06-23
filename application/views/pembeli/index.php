@@ -2,77 +2,33 @@
 <section class="section-slide">
     <div class="wrap-slick1">
         <div class="slick1">
-            <div class="item-slick1" style="background-image: url(<?= base_url('assets/user/img/slide-01.jpg') ?>);">
-                <div class="container h-full">
-                    <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-                        <div class="layer-slick1 animated visible-false" data-appear="fadeInDown" data-delay="0">
-                            <span class="ltext-101 cl2 respon2">
-                                Barang Unik
-                            </span>
-                        </div>
+            <?php foreach ($data_banner as $dtbnr) : ?>
+                <?php $no = 1; ?>
+                <div class="item-slick<?= $no; ?>" style="background-image: url(<?= base_url('assets/admin/img/banner/') . $dtbnr['image'] ?>);">
+                    <div class="container h-full">
+                        <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
+                            <div class="layer-slick1 animated visible-false" data-appear="fadeInDown" data-delay="0">
+                                <span class="ltext-101 cl2 respon2">
+                                    <?= $dtbnr['name']; ?>
+                                </span>
+                            </div>
 
-                        <div class="layer-slick1 animated visible-false" data-appear="fadeInUp" data-delay="800">
-                            <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
-                                Diawal Musim
-                            </h2>
-                        </div>
+                            <div class="layer-slick1 animated visible-false" data-appear="fadeInUp" data-delay="800">
+                                <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
+                                    <?= $dtbnr['descript']; ?>
+                                </h2>
+                            </div>
 
-                        <div class="layer-slick1 animated visible-false" data-appear="zoomIn" data-delay="1600">
-                            <a href="product.html" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-                                Beli Sekarang
-                            </a>
+                            <div class="layer-slick1 animated visible-false" data-appear="zoomIn" data-delay="1600">
+                                <a href="<?= base_url('Pembeli') ?>" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+                                    Beli Sekarang
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="item-slick1" style="background-image: url(<?= base_url('assets/user/img/slide-02.jpg') ?>);">
-                <div class="container h-full">
-                    <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-                        <div class="layer-slick1 animated visible-false" data-appear="rollIn" data-delay="0">
-                            <span class="ltext-101 cl2 respon2">
-                                Barang Terbaik Dimusim ini
-                            </span>
-                        </div>
-
-                        <div class="layer-slick1 animated visible-false" data-appear="lightSpeedIn" data-delay="800">
-                            <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
-                                Headset DJ
-                            </h2>
-                        </div>
-
-                        <div class="layer-slick1 animated visible-false" data-appear="slideInUp" data-delay="1600">
-                            <a href="product.html" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-                                Beli Sekarang
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item-slick1" style="background-image: url(<?= base_url('assets/user/img/slide-03.jpg') ?>);">
-                <div class="container h-full">
-                    <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-                        <div class="layer-slick1 animated visible-false" data-appear="rotateInDownLeft" data-delay="0">
-                            <span class="ltext-101 cl2 respon2">
-                                Koleksi Barang Bekas
-                            </span>
-                        </div>
-
-                        <div class="layer-slick1 animated visible-false" data-appear="rotateInUpRight" data-delay="800">
-                            <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
-                                Kualitas Dijamin
-                            </h2>
-                        </div>
-
-                        <div class="layer-slick1 animated visible-false" data-appear="rotateIn" data-delay="1600">
-                            <a href="product.html" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-                                Beli Sekarang
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <?php $no++; ?>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
@@ -95,159 +51,54 @@
                 Produk Jual
             </h3>
         </div>
-
+        <?= $this->session->flashdata('message') ?>
         <div class="row isotope-grid">
-            <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-                <!-- Block2 -->
-                <div class="block2">
-                    <div class="block2-pic hov-img0">
-                        <img src="<?= base_url('assets/user/img/product-01.jpg'); ?>" alt="IMG-PRODUCT">
+            <?php foreach ($data_produk as $datprk) : ?>
+                <?php $no = 1; ?>
+                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+                    <!-- Block2 -->
+                    <div class="block2">
+                        <div class="block2-pic hov-img0">
+                            <img src="<?= base_url('assets/admin/img/barang/') . $datprk['image']; ?>" alt="IMG-PRODUCT">
 
-                        <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                            Detail
-                        </a>
-                    </div>
+                            <form action="<?= base_url('Pembeli/add_cart/' . $datprk['id']); ?>" method="post">
+                                <div class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
+                                    <div class="wrap-num-product flex-w">
+                                        <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                            <i class="fs-16 zmdi zmdi-minus"></i>
+                                        </div>
 
-                    <div class="block2-txt flex-w flex-t p-t-14">
-                        <div class="block2-txt-child1 flex-col-l ">
-                            <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                headset DJ
-                            </a>
+                                        <input class="mtext-104 cl3 txt-center num-product" type="number" name="stok" id="stok" value="1">
 
-                            <span class="stext-105 cl3">
-                                Rp 120.000,00
-                            </span>
+                                        <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                            <i class="fs-16 zmdi zmdi-plus"></i>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 mb-5">
+                                        Keranjang
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="block2-txt flex-w flex-t p-t-14">
+                            <div class="block2-txt-child1 flex-col-l ">
+                                <a href="#" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                    <?= $datprk['name']; ?>
+                                </a>
+                                <span class="stext-105 cl3">
+                                    <?= 'Harga&nbsp;:&nbsp;' . number_format($datprk['harga'], '2', ',', '.'); ?>
+                                </span>
+                                <span class="stext-105 cl3">
+                                    <?= 'Stok&nbsp;:&nbsp;' . $datprk['stok'] ?>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-                <!-- Block2 -->
-                <div class="block2">
-                    <div class="block2-pic hov-img0">
-                        <img src="<?= base_url('assets/user/img/product-01.jpg'); ?>" alt="IMG-PRODUCT">
-
-                        <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                            Detail
-                        </a>
-                    </div>
-
-                    <div class="block2-txt flex-w flex-t p-t-14">
-                        <div class="block2-txt-child1 flex-col-l ">
-                            <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                headset DJ
-                            </a>
-
-                            <span class="stext-105 cl3">
-                                Rp 120.000,00
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-                <!-- Block2 -->
-                <div class="block2">
-                    <div class="block2-pic hov-img0">
-                        <img src="<?= base_url('assets/user/img/product-01.jpg'); ?>" alt="IMG-PRODUCT">
-
-                        <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                            Detail
-                        </a>
-                    </div>
-
-                    <div class="block2-txt flex-w flex-t p-t-14">
-                        <div class="block2-txt-child1 flex-col-l ">
-                            <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                headset DJ
-                            </a>
-
-                            <span class="stext-105 cl3">
-                                Rp 120.000,00
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-                <!-- Block2 -->
-                <div class="block2">
-                    <div class="block2-pic hov-img0">
-                        <img src="<?= base_url('assets/user/img/product-01.jpg'); ?>" alt="IMG-PRODUCT">
-
-                        <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                            Detail
-                        </a>
-                    </div>
-
-                    <div class="block2-txt flex-w flex-t p-t-14">
-                        <div class="block2-txt-child1 flex-col-l ">
-                            <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                headset DJ
-                            </a>
-
-                            <span class="stext-105 cl3">
-                                Rp 120.000,00
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-                <!-- Block2 -->
-                <div class="block2">
-                    <div class="block2-pic hov-img0">
-                        <img src="<?= base_url('assets/user/img/product-01.jpg'); ?>" alt="IMG-PRODUCT">
-
-                        <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                            Detail
-                        </a>
-                    </div>
-
-                    <div class="block2-txt flex-w flex-t p-t-14">
-                        <div class="block2-txt-child1 flex-col-l ">
-                            <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                headset DJ
-                            </a>
-
-                            <span class="stext-105 cl3">
-                                Rp 120.000,00
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-                <!-- Block2 -->
-                <div class="block2">
-                    <div class="block2-pic hov-img0">
-                        <img src="<?= base_url('assets/user/img/product-01.jpg'); ?>" alt="IMG-PRODUCT">
-
-                        <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                            Detail
-                        </a>
-                    </div>
-
-                    <div class="block2-txt flex-w flex-t p-t-14">
-                        <div class="block2-txt-child1 flex-col-l ">
-                            <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                headset DJ
-                            </a>
-
-                            <span class="stext-105 cl3">
-                                Rp 120.000,00
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <?php $no++; ?>
+            <?php endforeach; ?>
         </div>
-
-        <!-- Load more -->
-        <div class="flex-c-m flex-w w-full p-t-45">
-            <a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
-                Load More
-            </a>
-        </div>
+        <?= $this->pagination->create_links(); ?>
     </div>
 </section>
