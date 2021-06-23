@@ -10,7 +10,7 @@
     <!-- Content Row -->
     <div class="row justify-content-center mx-auto">
 
-        <div class="col-lg-8 mb-3">
+        <div class="col-md-7 mb-3">
             <div class="card">
                 <div class="card-header">
                     <h5 class="text-center">Selamat Datang <?= $user['name']; ?></h5>
@@ -29,11 +29,13 @@
                                 <th>Kode</th>
                                 <th>Pembeli</th>
                                 <th>Total</th>
+                                <th>Jumlah</th>
                                 <th>Tanggal</th>
+                                <th>Waktu</th>
                                 <th>No Telp Pembeli</th>
-                                <th>Tanggal</th>
+                                <th>Barang</th>
                                 <th>Status</th>
-                                <th>Opsi</th>
+                                <!-- <th>Opsi</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -49,18 +51,32 @@
                                         <?= $rpj['pembeli_name']; ?>
                                     </td>
                                     <td>
-                                        <?= 'Rp' . number_format($rpj['total_transaksi'], 2, ',', '.'); ?>
+                                        <?= 'Rp' . number_format($rpj['harga'], 2, ',', '.'); ?>
+                                    </td>
+                                    <td>
+                                        <?= $rpj['stok']; ?>
                                     </td>
                                     <td>
                                         <?= date('d M Y', strtotime($rpj['tanggal_transaksi'])); ?>
                                     </td>
                                     <td>
-                                        <?= $rpj['status']; ?>
+                                        <?= date('H:i:s', strtotime($rpj['tanggal_transaksi'])); ?>
                                     </td>
                                     <td>
+                                        <?= $rpj['pembeli_telp'] ?>
+                                    </td>
+                                    <td><?= $rpj['name'] ?></td>
+                                    <td>
+                                        <?php if ($rpj['status']) : ?>
+                                            Lunas
+                                        <?php else : ?>
+                                            Belum Lunas
+                                        <?php endif; ?>
+                                    </td>
+                                    <!-- <td>
                                         <div class="row justify-content-center">
                                             <div class="col-lg-6">
-                                                <a href="#edit-barang" class="badge badge-warning" role="badge" data-id="<?= $rpj['id']; ?>" data-kode="<?= $rpj['kode']; ?>" data-name="<?= $rpj['name']; ?>" data-image="<?= $rpj['image']; ?>" data-jenis="<?= $rpj['jenis'] ?>" data-stok="<?= $rpj['stok']; ?>" data-harga="<?= $rpj['harga']; ?>" data-toggle="modal">
+                                                <a href="#edit-barang" class="badge badge-warning" role="badge" data-id="<?= $rpj['id']; ?>" data-kode="<?= $rpj['kode']; ?>" data-name="<?= $rpj['name']; ?>" data-image="<?= $rpj['image']; ?>" data-stok="<?= $rpj['stok']; ?>" data-harga="<?= $rpj['harga']; ?>" data-toggle="modal">
                                                     <i class="fa fa-edit"></i>Edit
                                                 </a>
                                             </div>
@@ -70,7 +86,7 @@
                                                 </a>
                                             </div>
                                         </div>
-                                    </td>
+                                    </td> -->
                                 </tr>
                             <?php
                                 $no++;
