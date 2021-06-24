@@ -275,7 +275,37 @@
 </script>
 <!--===============================================================================================-->
 <script src="<?= base_url('assets/user/js/main.js'); ?>"></script>
+<script type="text/javascript">
+    $(document).on("keydown", "#no_telp", function(e) {
+        let keycode = e.keyCode || e.which;
+        let teks = $(this).val();
+        if (teks.length < 1) {
+            if (keycode == 48) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    });
 
+    $(document).ready(function() {
+        var url = window.location;
+        $('ul.main-menu a[href="' + url + '"]').parent().addClass('active-menu');
+        $('ul.main-menu a').filter(function() {
+            return this.href == url;
+        }).parent().addClass('active-menu');
+    });
+
+    // $(document).ready(function() {
+    //     var url = window.location;
+    //     $('ul.main-menu a[href="' + url + '"]').parent().addClass('color-filter9');
+    //     $('ul.main-menu a').filter(function() {
+    //         return this.href == url;
+    //     }).parent().addClass('color-filter9');
+    // });
+</script>
 </body>
 
 </html>

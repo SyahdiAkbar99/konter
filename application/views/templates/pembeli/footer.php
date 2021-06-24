@@ -134,13 +134,13 @@
         }
     });
 
-    // $(document).ready(function() {
-    //     var url = window.location;
-    //     $('ul.main_menu a[href="' + url + '"]').parent().addClass('sale-noti');
-    //     $('ul.main_menu a').filter(function() {
-    //         return this.href == url;
-    //     }).parent().addClass('sale-noti');
-    // });
+    $(document).ready(function() {
+        var url = window.location;
+        $('ul.main-menu a[href="' + url + '"]').parent().addClass('active-menu');
+        $('ul.main-menu a').filter(function() {
+            return this.href == url;
+        }).parent().addClass('active-menu');
+    });
 
     // $(document).ready(function() {
     //     var url = window.location;
