@@ -107,6 +107,36 @@
             }
         });
     });
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [
+                <?php
+                if (count($transaction) > 0) {
+                    foreach ($transaction as $data) {
+                        echo "'" . $data->kode . "',";
+                    }
+                }
+                ?>
+            ],
+            datasets: [{
+                label: 'Total Transaksi',
+                backgroundColor: '#ADD8E6',
+                borderColor: '##93C3D2',
+                data: [
+                    <?php
+                    if (count($transaction) > 0) {
+                        foreach ($transaction as $data) {
+                            echo $data->total_transaksi . ", ";
+                        }
+                    }
+                    ?>
+                ]
+            }]
+        },
+    });
 </script>
 </body>
 

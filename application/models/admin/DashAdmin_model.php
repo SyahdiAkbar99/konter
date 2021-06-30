@@ -20,6 +20,29 @@ class DashAdmin_model extends CI_Model
     }
 
 
+    public function transaction()
+    {
+        $data = $this->db->query("SELECT * from transaksi");
+        return $data->result();
+    }
+
+    public function getPendapatan()
+    {
+        $query = "SELECT SUM(transaksi.total_transaksi) AS pendapatan, DATE_FORMAT(transaksi.tanggal_transaksi, '%M %Y') AS bulan
+        FROM transaksi
+          WHERE
+            transaksi.status = 1
+              
+              GROUP BY MONTH(transaksi.tanggal_transaksi)
+              HAVING SUM(transaksi.total_transaksi)
+              ORDER BY transaksi.tanggal_transaksi ASC";
+
+        $getPendapatan = $this->db->query($query)->result_array();
+
+        return $getPendapatan;
+    }
+
+
 
 
     //Data Banner
