@@ -290,7 +290,19 @@ class Admin extends CI_Controller
         redirect('Admin/kelola_banner');
     }
 
+    public function riwayat_transaksi()
+    {
+        $data['title'] = 'Riwayat Transaksi';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
+        //tampilkan data tanaman sesuai user
+        $data['riwayat_penjualan'] = $this->dam->riwayat_penjualan();
+        $this->load->view('templates/admin/header', $data);
+        $this->load->view('templates/admin/sidebar', $data);
+        $this->load->view('templates/admin/navbar', $data);
+        $this->load->view('admin/riwayat_penjualan', $data);
+        $this->load->view('templates/admin/footer', $data);
+    }
 
 
 

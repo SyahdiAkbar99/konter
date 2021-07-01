@@ -90,4 +90,12 @@ class DashAdmin_model extends CI_Model
         $this->db->where('email', $where);
         $this->db->update('user', $data);
     }
+
+    //riwayat penjualan
+    public function riwayat_penjualan()
+    {
+        $query = "SELECT * FROM detail_transaksi
+                     JOIN transaksi ON detail_transaksi.transaksi_id = transaksi.id";
+        return $this->db->query($query)->result_array();
+    }
 }
