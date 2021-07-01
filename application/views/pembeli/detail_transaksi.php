@@ -56,6 +56,8 @@
                                 <th class="column-1">Product</th>
                                 <th class="column-2">Quantity</th>
                                 <th class="column-3">Harga</th>
+                                <th class="column-2"></th>
+                                <th class="column-3">Total Harga</th>
                                 <th class="column-4 p-r-42">Aksi</th>
 
                             </tr>
@@ -66,6 +68,15 @@
                                     </td>
                                     <td class="column-2 p-l-30"> <?= $row['stok']; ?> </td>
                                     <td class="column-3"><?= 'Rp' . number_format($row['harga'], 2, ',', '.'); ?></td>
+                                    <th class="column-2"></th>
+                                    <td class="column-3">
+                                        <?php
+                                        $sum = $row['stok'] * $row['harga'];
+                                        ?>
+                                        <?=
+                                        'Rp' . number_format($sum, 2, ',', '.');
+                                        ?>
+                                    </td>
                                     <td class="column-4">
                                         <?php if ($row['status'] == 1 && $row['image'] != NULL) : ?>
                                             <div class="badge badge-primary m-r-30">
@@ -75,6 +86,10 @@
                                             <form action="<?= base_url('Pembeli/bayar/') ?>" method="post">
                                                 <input type="hidden" name="penjual_id" id="penjual_id" value="<?= $row['penjual_id']; ?>">
                                                 <input type="hidden" name="id" id="id" value="<?= $row['id_detail']; ?>">
+                                                <input type="hidden" name="pembeli_name" id="pembeli_name" value="<?= $user['name'] ?>">
+                                                <input type="hidden" name="pembeli_email" id="pembeli_email" value="<?= $user['email'] ?>">
+
+                                                <input type="hidden" name="pembeli_telp" id="pembeli_telp" value="<?= $user['no_telp'] ?>">
                                                 <button type="submit" class="badge badge-primary m-r-30">
                                                     <i class="fa fa-upload"></i> Bayar
                                                 </button>

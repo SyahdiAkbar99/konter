@@ -14,6 +14,13 @@ class Penjual extends CI_Controller
     {
         $data['title'] = 'Dashboard Penjual';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['pendapatan'] = $this->dpj->getPendapatan($data['user']['id']);
+        $data['transaksi'] = $this->dpj->getCountPendapatan($data['user']['id']);
+        $data['grafik'] = $this->dpj->transaction($data['user']['id']);
+        // echo '<pre>';
+        // print_r($data['grafik']);
+        // echo '</pre>';
+        // die;
         $this->load->view('templates/penjual/header', $data);
         $this->load->view('templates/penjual/sidebar', $data);
         $this->load->view('templates/penjual/navbar', $data);

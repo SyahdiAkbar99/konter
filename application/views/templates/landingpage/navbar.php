@@ -41,7 +41,7 @@
                             <a href="<?= base_url('Pembeli/my_profile/') ?>">My Profile</a>
                         </li>
                         <li>
-                            <a href="<?= base_url('Auth/logout') ?>">Logout <i class="fa fa-sign-out"></i></a>
+                            <a href="<?= base_url('Auth') ?>">Login <i class="fa fa-home"></i></a>
                         </li>
                     </ul>
                 </div>
@@ -123,7 +123,7 @@
                 <a href="<?= base_url('Pembeli/checkout/') ?>">Checkout</a>
             </li>
             <li>
-                <a href="<?= base_url('Auth/logout') ?>">Logout <i class="fa fa-sign-out"></i></a>
+                <a href="<?= base_url('Auth') ?>">Login <i class="fa fa-home"></i></a>
             </li>
         </ul>
     </div>

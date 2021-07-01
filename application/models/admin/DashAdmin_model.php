@@ -22,7 +22,7 @@ class DashAdmin_model extends CI_Model
 
     public function transaction()
     {
-        $data = $this->db->query("SELECT * from transaksi");
+        $data = $this->db->query("SELECT * from detail_transaksi");
         return $data->result();
     }
 
@@ -35,7 +35,25 @@ class DashAdmin_model extends CI_Model
               
               GROUP BY MONTH(transaksi.tanggal_transaksi)
               HAVING SUM(transaksi.total_transaksi)
-              ORDER BY transaksi.tanggal_transaksi ASC";
+              ORDER BY transaksi.tanggal_transaksi DESC
+              LIMIT 1";
+
+        $getPendapatan = $this->db->query($query)->result_array();
+
+        return $getPendapatan;
+    }
+
+    public function getCountPendapatan()
+    {
+        $query = "SELECT COUNT(transaksi.status) AS banyakTransaksi, DATE_FORMAT(transaksi.tanggal_transaksi, '%M %Y') AS bulan
+        FROM transaksi
+          WHERE
+            transaksi.status = 1
+              
+              GROUP BY MONTH(transaksi.tanggal_transaksi)
+              HAVING COUNT(transaksi.status)
+              ORDER BY transaksi.tanggal_transaksi DESC
+              LIMIT 1";
 
         $getPendapatan = $this->db->query($query)->result_array();
 

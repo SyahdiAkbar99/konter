@@ -108,7 +108,7 @@ class Pembeli extends CI_Controller
             'penjual_id' => $cart->user_id,
             'pembeli_id' => $data['user']['id'],
             'pembeli_email' => $data['user']['email'],
-            'pembeli_name' => $data['user']['name'],
+            'requiredpembeli_name' => $data['user']['name'],
             'pembeli_telp' => $data['user']['no_telp'],
         ];
 
@@ -295,14 +295,29 @@ class Pembeli extends CI_Controller
                 }
             } else {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Produk gagal dicheckout
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>');
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+                </div>');
                 redirect('Pembeli/checkout');
             }
         }
     }
+
+
+    public function detail_transaksi($id)
+    {
+        $data['title'] = 'Detail Transaksi';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['data_banner'] = $this->dpm->data_banner();
+        $data['data_detail'] = $this->dpm->detail_trans($id);
+
+        $this->load->view('templates/pembeli/header', $data);
+        $this->load->view('templates/pembeli/navbar', $data);
+        $this->load->view('pembeli/detail_transaksi', $data);
+        $this->load->view('templates/pembeli/footer', $data);
+    }
+
 
     public function bayar()
     {
@@ -312,11 +327,21 @@ class Pembeli extends CI_Controller
         $data['penjual'] = $this->dpm->seller_only($this->input->post('penjual_id'));
         $data['detail'] = $this->dpm->per_trans($this->input->post('id'));
 
-        $this->form_validation->set_rules('pembeli_name', 'Name', 'required|trim');
-        $this->form_validation->set_rules('pembeli_email', 'Email', 'required|trim');
-        $this->form_validation->set_rules('pembeli_bank', 'Bank', 'required|trim');
-        $this->form_validation->set_rules('pembeli_rekening', 'Rekening', 'required|trim');
-        $this->form_validation->set_rules('pembeli_telp', 'Telepon', 'required|trim');
+        $this->form_validation->set_rules('pembeli_name', 'Name', 'required|trim', [
+            'required' => '%s tidak boleh kosong',
+        ]);
+        $this->form_validation->set_rules('pembeli_email', 'Email', 'required|trim', [
+            'required' => '%s tidak boleh kosong',
+        ]);
+        $this->form_validation->set_rules('pembeli_bank', 'Bank', 'required|trim', [
+            'required' => '%s tidak boleh kosong',
+        ]);
+        $this->form_validation->set_rules('pembeli_rekening', 'Rekening', 'required|trim', [
+            'required' => '%s tidak boleh kosong',
+        ]);
+        $this->form_validation->set_rules('pembeli_telp', 'Telepon', 'required|trim', [
+            'required' => '%s tidak boleh kosong',
+        ]);
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/pembeli/header', $data);
@@ -340,9 +365,9 @@ class Pembeli extends CI_Controller
             if ($upload_image) {
                 $config['upload_path'] = './assets/user/img/bayar/';
                 $config['allowed_types'] = 'jpg|png|jpeg';
-                $config['max_size'] = '2048';  //2MB max
-                $config['max_width'] = '700'; // pixel
-                $config['max_height'] = '700'; // pixel
+                $config['max_size'] = '100000';  //100MB max
+                $config['max_width'] = '10000'; // pixel
+                $config['max_height'] = '10000'; // pixel
 
                 $this->load->library('upload', $config);
 
@@ -536,18 +561,6 @@ class Pembeli extends CI_Controller
         // echo '</pre>';
     }
 
-    public function detail_transaksi($id)
-    {
-        $data['title'] = 'Detail Transaksi';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-        $data['data_banner'] = $this->dpm->data_banner();
-        $data['data_detail'] = $this->dpm->detail_trans($id);
-
-        $this->load->view('templates/pembeli/header', $data);
-        $this->load->view('templates/pembeli/navbar', $data);
-        $this->load->view('pembeli/detail_transaksi', $data);
-        $this->load->view('templates/pembeli/footer', $data);
-    }
 
 
 

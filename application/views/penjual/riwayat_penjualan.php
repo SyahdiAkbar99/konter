@@ -34,6 +34,7 @@
                                 <th>Waktu</th>
                                 <th>No Telp Pembeli</th>
                                 <th>Barang</th>
+                                <th>Bukti TF</th>
                                 <th>Status</th>
                                 <!-- <th>Opsi</th> -->
                             </tr>
@@ -66,6 +67,11 @@
                                         <?= $rpj['pembeli_telp'] ?>
                                     </td>
                                     <td><?= $rpj['name'] ?></td>
+                                    <td>
+                                        <div class="card" style="width: 18rem;">
+                                            <img src="<?= base_url('assets/user/img/bayar/') . $rpj['image']; ?>" alt="plant-pict">
+                                        </div>
+                                    </td>
                                     <td>
                                         <?php if ($rpj['status']) : ?>
                                             Lunas

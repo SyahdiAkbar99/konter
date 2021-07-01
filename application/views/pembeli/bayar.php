@@ -68,7 +68,11 @@
                                 <?= 'Jumlah&nbsp;: &nbsp;' . $detail['stok'] ?>
                             </h6>
                             <h6 class="m-text21 w-size20 w-full-sm m-b-30">
-                                <h4><?= 'Rp' . number_format($detail['harga'], 2, ',', '.') ?></h4>
+                                <?= 'Rp' . number_format($detail['harga'], 2, ',', '.') ?>
+                            </h6>
+                            <h6 class="m-text21 w-size20 w-full-sm m-b-30">
+                                <?php $ref = $detail['stok'] * $detail['harga']; ?>
+                                <h4><?= 'Total&nbsp;: &nbsp;' .  number_format($ref, 2, ',', '.') ?></h4>
                             </h6>
                             <input class="form-control" type="hidden" name="barang_id" id="barang_id" value="<?= $detail['barang_id'] ?>" placeholder="Id">
                         <?php else : ?>
