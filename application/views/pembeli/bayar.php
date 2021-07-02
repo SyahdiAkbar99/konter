@@ -62,7 +62,7 @@
                                 <?= 'Kode&nbsp;: &nbsp;' . $detail['kode'] ?>
                             </h6>
                             <h6 class="m-text21 w-size20 w-full-sm m-b-30">
-                                <?= 'Bunga&nbsp;: &nbsp;' . $detail['name'] ?>
+                                <?= 'Barang&nbsp;: &nbsp;' . $detail['name'] ?>
                             </h6>
                             <h6 class="m-text21 w-size20 w-full-sm m-b-30">
                                 <?= 'Jumlah&nbsp;: &nbsp;' . $detail['stok'] ?>
@@ -70,10 +70,13 @@
                             <h6 class="m-text21 w-size20 w-full-sm m-b-30">
                                 <?= 'Rp' . number_format($detail['harga'], 2, ',', '.') ?>
                             </h6>
-                            <h6 class="m-text21 w-size20 w-full-sm m-b-30">
+                            <h6 class="m-text21 w-size20 w-full-sm m-b-40">
                                 <?php $ref = $detail['stok'] * $detail['harga']; ?>
                                 <h4><?= 'Total&nbsp;: &nbsp;' .  number_format($ref, 2, ',', '.') ?></h4>
                             </h6>
+                            <div class="card m-t-30" style="width: 18rem;">
+                                <img src="<?= base_url('assets/admin/img/barang/') . $detail['image']; ?>" alt="IMG">
+                            </div>
                             <input class="form-control" type="hidden" name="barang_id" id="barang_id" value="<?= $detail['barang_id'] ?>" placeholder="Id">
                         <?php else : ?>
                         <?php endif; ?>

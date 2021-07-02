@@ -53,7 +53,10 @@
                         <table class="table-shopping-cart">
                             <?= $this->session->flashdata('message') ?>
                             <tr class="table_head">
+                                <th class="column-1">Nama</th>
+                                <th class="column-1"></th>
                                 <th class="column-1">Product</th>
+                                <th class="column-1"></th>
                                 <th class="column-2">Quantity</th>
                                 <th class="column-3">Harga</th>
                                 <th class="column-2"></th>
@@ -66,6 +69,13 @@
                                     <td class="column-1">
                                         <?= $row['name']; ?>
                                     </td>
+                                    <td class="column-1"></td>
+                                    <td class="column-1">
+                                        <div class="how-itemcart1">
+                                            <img src="<?= base_url('assets/admin/img/barang/') . $row['image']; ?>" alt="IMG">
+                                        </div>
+                                    </td>
+                                    <td class="column-1"></td>
                                     <td class="column-2 p-l-30"> <?= $row['stok']; ?> </td>
                                     <td class="column-3"><?= 'Rp' . number_format($row['harga'], 2, ',', '.'); ?></td>
                                     <th class="column-2"></th>

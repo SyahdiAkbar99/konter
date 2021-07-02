@@ -266,6 +266,7 @@ class Pembeli extends CI_Controller
                 $price = $this->input->post('price');
                 $qty = $this->input->post('qty');
                 $seller_id = $this->input->post('penjual_id');
+                $image = $this->input->post('image');
                 for ($i = 0; $i < count($id); $i++) {
                     $data = [
                         'transaksi_id' => $transaksi_id,
@@ -273,6 +274,7 @@ class Pembeli extends CI_Controller
                         'name' => $name[$i],
                         'harga' => $price[$i],
                         'stok' => $qty[$i],
+                        'image' => $image[$i],
                         'penjual_id' => $seller_id[$i],
                     ];
                     $query1 = $this->db->insert('detail_transaksi', $data);

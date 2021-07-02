@@ -169,6 +169,8 @@
 
                                             <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="hidden" name="qty[]" id="qty" value="<?= $items['qty']; ?>" placeholder="Qty">
 
+                                            <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="hidden" name="image[]" id="image" value="<?= $items['image']; ?>" placeholder="Image">
+
 
 
                                         <?php endif; ?>
