@@ -35,6 +35,7 @@
                                 <th>No Telp Pembeli</th>
                                 <th>Barang</th>
                                 <th>Bukti TF</th>
+                                <th>Total</th>
                                 <th>Status</th>
                                 <!-- <th>Opsi</th> -->
                             </tr>
@@ -71,6 +72,12 @@
                                         <div class="card" style="width: 18rem;">
                                             <img src="<?= base_url('assets/user/img/bayar/') . $rpj['image']; ?>" alt="plant-pict">
                                         </div>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $result = $rpj['harga'] * $rpj['stok'];
+                                        ?>
+                                        <?= 'Rp ' . number_format($result, 2, ',', '.') ?>
                                     </td>
                                     <td>
                                         <?php if ($rpj['status']) : ?>
