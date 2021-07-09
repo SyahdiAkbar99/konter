@@ -384,7 +384,7 @@ class Pembeli extends CI_Controller
                         'total' => preg_replace('/,.*|[^0-9]/', '', $total),
                         'status' => 1,
                         'tanggal_detail' => date('Y-m-d H:i:s'),
-                        'image' => $this->upload->data('file_name'),
+                        'image_bayar' => $this->upload->data('file_name'),
                     ];
                     $this->db->where('id_detail', $this->input->post('id_detail'));
                     $query = $this->db->update('detail_transaksi', $data);

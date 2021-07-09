@@ -61,7 +61,9 @@
                                 <th class="column-3">Harga</th>
                                 <th class="column-2"></th>
                                 <th class="column-3">Total Harga</th>
-                                <th class="column-4 p-r-42">Aksi</th>
+                                <td class="column-1"></td>
+                                <th class="column-4 text-center">Aksi</th>
+                                <td class="column-1"></td>
 
                             </tr>
                             <?php foreach ($data_detail as $row) : ?>
@@ -87,10 +89,15 @@
                                         'Rp' . number_format($sum, 2, ',', '.');
                                         ?>
                                     </td>
+                                    <td class="column-1"></td>
                                     <td class="column-4">
-                                        <?php if ($row['status'] == 1 && $row['image'] != NULL) : ?>
+                                        <?php if ($row['status'] == 2 && $row['image'] != NULL) : ?>
                                             <div class="badge badge-primary m-r-30">
                                                 <i class="fa fa-circle"></i> Confirmed
+                                            </div>
+                                        <?php elseif ($row['status'] == 1 && $row['image'] != NULL) : ?>
+                                            <div class="badge badge-primary m-r-30">
+                                                <i class="fa fa-circle"></i> Dicek Penjual, Mohon Tunggu
                                             </div>
                                         <?php else : ?>
                                             <form action="<?= base_url('Pembeli/bayar/') ?>" method="post">
@@ -106,7 +113,7 @@
                                             </form>
                                         <?php endif; ?>
                                     </td>
-
+                                    <td class="column-1"></td>
                                 </tr>
                             <?php endforeach; ?>
                         </table>

@@ -37,7 +37,7 @@
                                 <th>Bukti TF</th>
                                 <th>Total</th>
                                 <th>Status</th>
-                                <!-- <th>Opsi</th> -->
+                                <th>Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -70,7 +70,7 @@
                                     <td><?= $rpj['name'] ?></td>
                                     <td>
                                         <div class="card" style="width: 18rem;">
-                                            <img src="<?= base_url('assets/user/img/bayar/') . $rpj['image']; ?>" alt="plant-pict">
+                                            <img src="<?= base_url('assets/user/img/bayar/') . $rpj['image_bayar']; ?>" alt="plant-pict">
                                         </div>
                                     </td>
                                     <td>
@@ -80,26 +80,29 @@
                                         <?= 'Rp ' . number_format($result, 2, ',', '.') ?>
                                     </td>
                                     <td>
-                                        <?php if ($rpj['status']) : ?>
+                                        <?php if ($rpj['status'] == 2) : ?>
                                             Lunas
+                                        <?php elseif ($rpj['status'] == 1) : ?>
+                                            Dicek Penjual
                                         <?php else : ?>
                                             Belum Lunas
                                         <?php endif; ?>
                                     </td>
-                                    <!-- <td>
+                                    <td>
                                         <div class="row justify-content-center">
                                             <div class="col-lg-6">
-                                                <a href="#edit-barang" class="badge badge-warning" role="badge" data-id="<?= $rpj['id']; ?>" data-kode="<?= $rpj['kode']; ?>" data-name="<?= $rpj['name']; ?>" data-image="<?= $rpj['image']; ?>" data-stok="<?= $rpj['stok']; ?>" data-harga="<?= $rpj['harga']; ?>" data-toggle="modal">
-                                                    <i class="fa fa-edit"></i>Edit
-                                                </a>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <a href="#delete<?= $rpj['id'] ?>" class="badge badge-danger" data-toggle="modal">
-                                                    <i class="fa fa-edit"></i>Delete
-                                                </a>
+                                                <?php if ($rpj['status'] == 2) : ?>
+                                                    <a href="#" class="badge badge-success" data-toggle="modal">
+                                                        <i class="fa fa-info-circle"></i> Lunas
+                                                    </a>
+                                                <?php else : ?>
+                                                    <a href="#konfirm<?= $rpj['id'] ?>" class="badge badge-warning" data-toggle="modal">
+                                                        <i class="fa fa-edit"></i> Konfirmasi
+                                                    </a>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
-                                    </td> -->
+                                    </td>
                                 </tr>
                             <?php
                                 $no++;
@@ -118,4 +121,33 @@
 
     </div>
     <!-- /.container-fluid -->
+
+    <!-- Modal Delete -->
+    <?php foreach ($riwayat_penjualan as $rpj) : ?>
+        <div class="modal fade" id="konfirm<?= $rpj['id']; ?>">
+            <div class=" modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning">
+                        <h4 class="modal-title">Konfirmasi <?= $title ?></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="<?= base_url('Penjual/riwayat_penjualan'); ?>" method="post">
+                        <div class="modal-body">
+                            <input type="hidden" name="id" id="id" value="<?= $rpj['id']; ?>">
+                            <p class="text-center">Apakah anda yakin mengonfirmasi pesanan ini?</p>
+                        </div>
+                        <div class="modal-footer justify-content-end">
+                            <button type="submit" class="btn btn-info btn-outline-light">Ya</button>
+                            <button type="button" class="btn btn-danger btn-outline-light" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+    <?php endforeach; ?>
+    <!-- /.modal -->
 </div>

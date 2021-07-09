@@ -289,16 +289,53 @@ class Penjual extends CI_Controller
     //Riwayat Penjualan
     public function riwayat_penjualan()
     {
-        $data['title'] = 'Riwayat Penjualan';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        //tampilkan data tanaman sesuai user
-        $data['riwayat_penjualan'] = $this->dpj->riwayat_penjualan($data['user']['id']);
-        $this->load->view('templates/penjual/header', $data);
-        $this->load->view('templates/penjual/sidebar', $data);
-        $this->load->view('templates/penjual/navbar', $data);
-        $this->load->view('penjual/riwayat_penjualan', $data);
-        $this->load->view('templates/penjual/footer', $data);
+        $this->form_validation->set_rules('id', 'Id', 'required|trim');
+        if ($this->form_validation->run() == false) {
+            $data['title'] = 'Riwayat Penjualan';
+            $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+            //tampilkan data tanaman sesuai user
+            $data['riwayat_penjualan'] = $this->dpj->riwayat_penjualan($data['user']['id']);
+            $this->load->view('templates/penjual/header', $data);
+            $this->load->view('templates/penjual/sidebar', $data);
+            $this->load->view('templates/penjual/navbar', $data);
+            $this->load->view('penjual/riwayat_penjualan', $data);
+            $this->load->view('templates/penjual/footer', $data);
+        } else {
+            $id = $this->input->post('id');
+            $data = [
+                'status' => 2,
+            ];
+            $this->db->where('transaksi_id', $id);
+            $query = $this->db->update('detail_transaksi', $data);
+            if ($query) {
+                $this->db->where('id', $id);
+                $query1 = $this->db->update('transaksi', $data);
+                if ($query1) {
+                    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Produk berhasil dikonfirmasi
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>');
+                    redirect('Penjual/riwayat_penjualan');
+                } else {
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Produk gagal dikonfirmasi
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>');
+                    redirect('Penjual/riwayat_penjualan');
+                }
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Produk gagal dikonfirmasi detail
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>');
+                redirect('Penjual/riwayat_penjualan');
+            }
+        }
     }
 
     //Profile

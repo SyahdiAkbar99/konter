@@ -95,9 +95,13 @@
                                         </td>
                                         <td class="column-1"></td>
                                         <td class="column-6">
-                                            <?php if ($row['status'] == 1) : ?>
+                                            <?php if ($row['status'] == 2) : ?>
                                                 <span class="m-text21 w-size10 w-full-sm">
                                                     Pembayaran diproses
+                                                </span>
+                                            <?php elseif ($row['status'] == 1) : ?>
+                                                <span class="m-text21 w-size10 w-full-sm">
+                                                    Pembayaran dicek penjual
                                                 </span>
                                             <?php else : ?>
                                                 <form action="<?= base_url('Pembeli/batal_transaksi/') ?>" method="post">

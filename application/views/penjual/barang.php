@@ -21,7 +21,7 @@
                     <?= $this->session->flashdata('message') ?>
                 </div>
                 <div class="card-body">
-                    <table id="barang" class="table table-responsive" style="width:100%" cellspacing="2">
+                    <table id="barang-1" class="table table-responsive" style="width:100%" cellspacing="2">
                         <thead>
                             <tr class="text-center">
                                 <th>No</th>
