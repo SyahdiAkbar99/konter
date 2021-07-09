@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 23 Jun 2021 pada 20.18
+-- Waktu pembuatan: 09 Jul 2021 pada 15.14
 -- Versi server: 10.4.11-MariaDB
 -- Versi PHP: 7.3.15
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `konter`
 --
+CREATE DATABASE IF NOT EXISTS `konter` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `konter`;
 
 -- --------------------------------------------------------
 
@@ -28,6 +30,7 @@ SET time_zone = "+00:00";
 -- Struktur dari tabel `barang`
 --
 
+DROP TABLE IF EXISTS `barang`;
 CREATE TABLE `barang` (
   `id` int(11) NOT NULL,
   `kode` varchar(128) DEFAULT NULL,
@@ -49,12 +52,13 @@ INSERT INTO `barang` (`id`, `kode`, `name`, `image`, `jenis`, `harga`, `stok`, `
 (2, '22/06/2021 -BG- 002', 'Mouse', 'letter_M.png', 'Mouse', 16000, 9, '2021-06-22 14:11:13', 2),
 (3, '22/06/2021 -BG- 003', 'Laptop', 'letter_L.png', 'Electronic', 5000000, 15, '2021-06-22 14:51:41', 2),
 (6, '23/06/2021 -BG- 001', 'Vortex Vanwuisher', 'letter_V.png', 'Vortex', 23000, 10, '2021-06-23 13:11:22', 2),
-(7, '23/06/2021 -BG- 002', 'Lasegar', 'letter_L1.png', 'Minuman', 14000, 20, '2021-06-23 13:13:04', 2),
+(7, '23/06/2021 -BG- 002', 'Lasegar', 'letter_L1.png', 'Minuman', 14000, 19, '2021-06-23 13:13:04', 2),
 (8, '23/06/2021 -BG- 003', 'Audiotron', 'letter_A.png', 'Electronic', 15000, 15, '2021-06-23 13:13:56', 2),
-(9, '23/06/2021 -BG- 004', 'Headphone', 'letter_H.png', 'Headphone', 27000, 16, '2021-06-23 13:15:12', 2),
+(9, '23/06/2021 -BG- 004', 'Headphone', 'letter_H.png', 'Headphone', 27000, 15, '2021-06-23 13:15:12', 2),
 (10, '23/06/2021 -BG- 005', 'Advan S7', 'letter_A1.png', 'Handphone', 1500000, 20, '2021-06-23 13:19:59', 2),
 (11, '23/06/2021 -BG- 006', 'Samsung J5', 'letter_S.png', 'Handphone', 500000, 15, '2021-06-23 13:20:22', 2),
-(12, '23/06/2021 -BG- 007', 'Asus Tuf 1212', 'letter_A2.png', 'Laptop', 5000000, 13, '2021-06-23 15:38:26', 4);
+(12, '23/06/2021 -BG- 007', 'Asus Tuf 1212', 'letter_A2.png', 'Laptop', 5000000, 13, '2021-06-23 15:38:26', 4),
+(13, '08/07/2021 -BG- 001', 'Exdous Pertama', 'letter_A3.png', 'Laptop', 8100000, 13, '2021-07-08 13:45:19', 2);
 
 -- --------------------------------------------------------
 
@@ -62,6 +66,7 @@ INSERT INTO `barang` (`id`, `kode`, `name`, `image`, `jenis`, `harga`, `stok`, `
 -- Struktur dari tabel `barang_keluar`
 --
 
+DROP TABLE IF EXISTS `barang_keluar`;
 CREATE TABLE `barang_keluar` (
   `id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
@@ -72,6 +77,7 @@ CREATE TABLE `barang_keluar` (
 --
 -- Trigger `barang_keluar`
 --
+DROP TRIGGER IF EXISTS `t__keluar`;
 DELIMITER $$
 CREATE TRIGGER `t__keluar` AFTER INSERT ON `barang_keluar` FOR EACH ROW BEGIN
 	UPDATE barang SET stok = stok - NEW.stok WHERE id = NEW.barang_id;
@@ -85,6 +91,7 @@ DELIMITER ;
 -- Struktur dari tabel `barang_masuk`
 --
 
+DROP TABLE IF EXISTS `barang_masuk`;
 CREATE TABLE `barang_masuk` (
   `id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
@@ -95,6 +102,7 @@ CREATE TABLE `barang_masuk` (
 --
 -- Trigger `barang_masuk`
 --
+DROP TRIGGER IF EXISTS `t_masuk`;
 DELIMITER $$
 CREATE TRIGGER `t_masuk` AFTER INSERT ON `barang_masuk` FOR EACH ROW BEGIN
 	UPDATE barang SET stok = stok + NEW.stok WHERE id = NEW.barang_id;
@@ -108,6 +116,7 @@ DELIMITER ;
 -- Struktur dari tabel `data_banner`
 --
 
+DROP TABLE IF EXISTS `data_banner`;
 CREATE TABLE `data_banner` (
   `id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
@@ -132,6 +141,7 @@ INSERT INTO `data_banner` (`id`, `name`, `image`, `descript`, `banner_date`, `ur
 -- Struktur dari tabel `detail_transaksi`
 --
 
+DROP TABLE IF EXISTS `detail_transaksi`;
 CREATE TABLE `detail_transaksi` (
   `id_detail` int(11) NOT NULL,
   `barang_id` int(11) NOT NULL,
@@ -142,6 +152,7 @@ CREATE TABLE `detail_transaksi` (
   `total` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   `tanggal_detail` datetime NOT NULL,
+  `image_bayar` varchar(256) NOT NULL,
   `penjual_id` int(11) NOT NULL,
   `transaksi_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -150,10 +161,14 @@ CREATE TABLE `detail_transaksi` (
 -- Dumping data untuk tabel `detail_transaksi`
 --
 
-INSERT INTO `detail_transaksi` (`id_detail`, `barang_id`, `name`, `stok`, `harga`, `image`, `total`, `status`, `tanggal_detail`, `penjual_id`, `transaksi_id`) VALUES
-(5, 1, 'Earphone', 2, 25000, 'letter_F.png', 50000, 1, '2021-06-24 00:42:55', 2, 3),
-(6, 12, 'Asus Tuf 1212', 2, 5000000, 'letter_T.png', 10000000, 1, '2021-06-24 00:42:25', 4, 3),
-(7, 2, 'Mouse', 1, 16000, 'letter_R.png', 16000, 1, '2021-06-24 00:58:07', 2, 4);
+INSERT INTO `detail_transaksi` (`id_detail`, `barang_id`, `name`, `stok`, `harga`, `image`, `total`, `status`, `tanggal_detail`, `image_bayar`, `penjual_id`, `transaksi_id`) VALUES
+(5, 1, 'Earphone', 2, 25000, 'letter_F.png', 50000, 2, '2021-06-24 00:42:55', 'letter_F.png', 2, 3),
+(6, 12, 'Asus Tuf 1212', 2, 5000000, 'letter_T.png', 10000000, 2, '2021-06-24 00:42:25', 'letter_T.png', 4, 3),
+(7, 2, 'Mouse', 1, 16000, 'letter_R.png', 16000, 2, '2021-06-24 00:58:07', 'letter_R.png', 2, 4),
+(8, 13, 'Exdous Pertama', 1, 8100000, 'letter_A3.png', 8100000, 1, '2021-07-09 19:31:15', 'letter_P.png', 2, 6),
+(9, 7, 'Lasegar', 1, 14000, 'letter_L.png', 14000, 1, '2021-07-09 19:23:57', 'letter_D.png', 2, 6),
+(10, 9, 'Headphone', 1, 27000, 'letter_H.png', NULL, NULL, '0000-00-00 00:00:00', '', 2, 7),
+(11, 13, 'Exdous Pertama', 1, 8100000, 'letter_A3.png', NULL, NULL, '0000-00-00 00:00:00', '', 2, 7);
 
 -- --------------------------------------------------------
 
@@ -161,6 +176,7 @@ INSERT INTO `detail_transaksi` (`id_detail`, `barang_id`, `name`, `stok`, `harga
 -- Struktur dari tabel `jenis`
 --
 
+DROP TABLE IF EXISTS `jenis`;
 CREATE TABLE `jenis` (
   `id` int(11) NOT NULL,
   `name` varchar(128) DEFAULT NULL
@@ -182,7 +198,8 @@ INSERT INTO `jenis` (`id`, `name`) VALUES
 (9, 'Headphone'),
 (10, 'Handphone'),
 (11, 'Handphone'),
-(12, 'Laptop');
+(12, 'Laptop'),
+(13, 'Laptop');
 
 -- --------------------------------------------------------
 
@@ -190,6 +207,7 @@ INSERT INTO `jenis` (`id`, `name`) VALUES
 -- Struktur dari tabel `transaksi`
 --
 
+DROP TABLE IF EXISTS `transaksi`;
 CREATE TABLE `transaksi` (
   `id` int(11) NOT NULL,
   `kode` varchar(128) NOT NULL,
@@ -202,7 +220,7 @@ CREATE TABLE `transaksi` (
   `penjual_id` int(11) DEFAULT NULL,
   `penjual_name` varchar(128) DEFAULT NULL,
   `penjual_bank` varchar(128) DEFAULT NULL,
-  `penjual_rekening` int(128) DEFAULT NULL,
+  `penjual_rekening` varchar(128) DEFAULT NULL,
   `penjual_telp` char(14) DEFAULT NULL,
   `total_transaksi` int(11) DEFAULT NULL,
   `tanggal_transaksi` datetime DEFAULT NULL,
@@ -214,9 +232,11 @@ CREATE TABLE `transaksi` (
 --
 
 INSERT INTO `transaksi` (`id`, `kode`, `pembeli_id`, `pembeli_name`, `pembeli_email`, `pembeli_bank`, `pembeli_rekening`, `pembeli_telp`, `penjual_id`, `penjual_name`, `penjual_bank`, `penjual_rekening`, `penjual_telp`, `total_transaksi`, `tanggal_transaksi`, `status`) VALUES
-(3, '23/06/2021 -ELC- 001', 3, 'Pembeli', 'pembeli@gmail.com', 'BNI', '0111099901110888', '6285000988123', 2, 'Penjual', 'BRI', 2147483647, '6287880900666', 10050000, '2021-06-24 00:42:55', 1),
-(4, '24/06/2021 -ELC- 001', 3, 'Pembeli', 'pembeli@gmail.com', 'BNI', '0111099901110888', '6285000988123', 2, 'Penjual', 'BRI', 2147483647, '6287880900666', 16000, '2021-06-24 00:58:07', 1),
-(5, '24/06/2021 -ELC- 002', 3, 'Pembeli', 'pembeli@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 23000, NULL, NULL);
+(3, '23/06/2021 -ELC- 001', 3, 'Pembeli', 'pembeli@gmail.com', 'BNI', '0111099901110888', '6285000988123', 2, 'Penjual', 'BRI', '2147483647', '6287880900666', 10050000, '2021-06-24 00:42:55', 2),
+(4, '24/06/2021 -ELC- 001', 3, 'Pembeli', 'pembeli@gmail.com', 'BNI', '0111099901110888', '6285000988123', 2, 'Penjual', 'BRI', '2147483647', '6287880900666', 16000, '2021-06-24 00:58:07', 2),
+(5, '24/06/2021 -ELC- 002', 3, 'Pembeli', 'pembeli@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 23000, NULL, NULL),
+(6, '09/07/2021 -ELC- 001', 3, 'Pembeli', 'pembeli@gmail.com', 'BRI', '0001009200120045', '6285000988000', 2, 'Penjual', 'BRI', '2147483647', '6287880900666', 8114000, '2021-07-09 19:31:15', 1),
+(7, '09/07/2021 -ELC- 002', 3, 'Pembeli', 'pembeli@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 8127000, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -224,6 +244,7 @@ INSERT INTO `transaksi` (`id`, `kode`, `pembeli_id`, `pembeli_name`, `pembeli_em
 -- Struktur dari tabel `user`
 --
 
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `name` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
@@ -256,6 +277,7 @@ INSERT INTO `user` (`id`, `name`, `email`, `image`, `password`, `no_telp`, `alam
 -- Struktur dari tabel `user_access_menu`
 --
 
+DROP TABLE IF EXISTS `user_access_menu`;
 CREATE TABLE `user_access_menu` (
   `id` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
@@ -277,6 +299,7 @@ INSERT INTO `user_access_menu` (`id`, `role_id`, `menu_id`) VALUES
 -- Struktur dari tabel `user_menu`
 --
 
+DROP TABLE IF EXISTS `user_menu`;
 CREATE TABLE `user_menu` (
   `id` int(11) NOT NULL,
   `menu` varchar(128) NOT NULL,
@@ -298,6 +321,7 @@ INSERT INTO `user_menu` (`id`, `menu`, `urutan`) VALUES
 -- Struktur dari tabel `user_role`
 --
 
+DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
   `id` int(11) NOT NULL,
   `role` varchar(128) NOT NULL
@@ -318,6 +342,7 @@ INSERT INTO `user_role` (`id`, `role`) VALUES
 -- Struktur dari tabel `user_sub_menu`
 --
 
+DROP TABLE IF EXISTS `user_sub_menu`;
 CREATE TABLE `user_sub_menu` (
   `id` int(11) NOT NULL,
   `menu_id` int(11) NOT NULL,
@@ -430,19 +455,19 @@ ALTER TABLE `user_sub_menu`
 -- AUTO_INCREMENT untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_keluar`
 --
 ALTER TABLE `barang_keluar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_masuk`
 --
 ALTER TABLE `barang_masuk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT untuk tabel `data_banner`
@@ -454,19 +479,19 @@ ALTER TABLE `data_banner`
 -- AUTO_INCREMENT untuk tabel `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
-  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `jenis`
 --
 ALTER TABLE `jenis`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
