@@ -69,12 +69,12 @@
                                     <td>
                                         <div class="row justify-content-center">
                                             <div class="col-lg-6">
-                                                <a href="#edit-barang" class="badge badge-warning" role="badge" data-id="<?= $brg['id']; ?>" data-kode="<?= $brg['kode']; ?>" data-name="<?= $brg['name']; ?>" data-image="<?= $brg['image']; ?>" data-jenis="<?= $brg['jenis'] ?>" data-stok="<?= $brg['stok']; ?>" data-harga="<?= $brg['harga']; ?>" data-toggle="modal">
+                                                <a href="#edit-barang<?= $brg['id'] ?>" class="badge badge-warning" role="badge" data-toggle="modal">
                                                     <i class="fa fa-edit"></i>Edit
                                                 </a>
                                             </div>
                                             <div class="col-lg-6">
-                                                <a href="#delete<?= $brg['id'] ?>" class="badge badge-danger" data-toggle="modal">
+                                                <a href="#delete<?= $brg['id'] ?>" class="badge badge-danger" role="badge" data-toggle="modal">
                                                     <i class="fa fa-edit"></i>Delete
                                                 </a>
                                             </div>
@@ -197,70 +197,73 @@
 
 
         <!-- Modal Edit -->
-        <div class="modal fade" id="edit-barang">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header bg-warning">
-                        <h4 class="modal-title">Edit <?= $title ?></h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form action="<?= base_url('Penjual/update_produk'); ?>" method="post" enctype="multipart/form-data">
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="Kode">Kode</label>
-                                <input type="hidden" name="id" id="id">
-                                <input type="text" class="form-control" name="kode" id="kode" value="<?= $kode ?>" placeholder="Kode">
-                            </div>
-                            <div class="form-group">
-                                <label for="Nama">Nama</label>
-                                <input type="text" class="form-control" name="nama" id="nama" value="<?= set_value('nama') ?>" placeholder="Nama">
-                            </div>
-                            <div class="form-group">
-                                <label for="Gambar">Gambar</label>
-                                <div class="input-group">
-                                    <input type="file" class="form-control" name="image" id="image" value="<?= set_value('image') ?>">
+        <?php foreach ($barang as $brg) : ?>
+            <div class="modal fade" id="edit-barang<?= $brg['id']; ?>">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-warning">
+                            <h4 class="modal-title">Edit <?= $title ?></h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="<?= base_url('Penjual/update_produk'); ?>" method="post" enctype="multipart/form-data">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="Kode">Kode</label>
+                                    <input type="hidden" name="id" id="id" value="<?= $brg['id']; ?>">
+                                    <input type="text" class="form-control" name="kode" id="kode" value="<?= $brg['kode'] ?>" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Nama">Nama</label>
+                                    <input type="text" class="form-control" name="nama" id="nama" value="<?= $brg['name'] ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Gambar">Gambar</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="" id="" value="<?= $brg['image'] ?>" readonly>
+                                        <input type="file" class="form-control" name="image" id="image">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Jenis">Jenis</label>
+                                    <?php
+                                    if (!empty($getJenis)) : ?>
+                                        <input list="jenis" name="jenis" class="form-control" value="<?= $brg['jenis'] ?>">
+                                        <datalist id="jenis">
+                                            <?php foreach ($getJenis as $item) : ?>
+                                                <option value="<?= $item["name"]; ?>">
+                                                <?php endforeach; ?>
+                                        </datalist>
+                                    <?php else : ?>
+                                        <input list="jenis" name="jenis" class="form-control" Placeholder="Jenis">
+                                        <datalist id="jenis">
+                                            <?php foreach ($getJenis as $item) : ?>
+                                                <option value="<?= $item["name"]; ?>">
+                                                <?php endforeach; ?>
+                                        </datalist>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Stok">Stok</label>
+                                    <input type="text" class="form-control" name="stok" id="stok" value="<?= $brg['stok'] ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Harga">Harga</label>
+                                    <input type="text" class="form-control" name="harga" id="harga" value="<?= $brg['harga'] ?>">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="Jenis">Jenis</label>
-                                <?php
-                                if (!empty($getJenis)) : ?>
-                                    <input list="jenis" name="jenis" class="form-control" Placeholder="Jenis">
-                                    <datalist id="jenis">
-                                        <?php foreach ($getJenis as $item) : ?>
-                                            <option value="<?= $item["name"]; ?>">
-                                            <?php endforeach; ?>
-                                    </datalist>
-                                <?php else : ?>
-                                    <input list="jenis" name="jenis" class="form-control" Placeholder="Jenis">
-                                    <datalist id="jenis">
-                                        <?php foreach ($getJenis as $item) : ?>
-                                            <option value="<?= $item["name"]; ?>">
-                                            <?php endforeach; ?>
-                                    </datalist>
-                                <?php endif; ?>
+                            <div class="modal-footer justify-content-end">
+                                <button type="submit" class="btn btn-warning btn-outline-light">Update</button>
+                                <button type="button" class="btn btn-danger btn-outline-light" data-dismiss="modal">Tutup</button>
                             </div>
-                            <div class="form-group">
-                                <label for="Stok">Stok</label>
-                                <input type="text" class="form-control" name="stok" id="stok" value="<?= set_value('stok') ?>" placeholder="Stok">
-                            </div>
-                            <div class="form-group">
-                                <label for="Harga">Harga</label>
-                                <input type="text" class="form-control" name="harga" id="harga" value="<?= set_value('harga') ?>" placeholder="Harga">
-                            </div>
-                        </div>
-                        <div class="modal-footer justify-content-end">
-                            <button type="submit" class="btn btn-warning btn-outline-light">Update</button>
-                            <button type="button" class="btn btn-danger btn-outline-light" data-dismiss="modal">Tutup</button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
+                    <!-- /.modal-content -->
                 </div>
-                <!-- /.modal-content -->
+                <!-- /.modal-dialog -->
             </div>
-            <!-- /.modal-dialog -->
-        </div>
+        <?php endforeach; ?>
         <!-- /.modal -->
 
     </div>
