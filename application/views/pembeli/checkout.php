@@ -97,7 +97,7 @@
                                         <td class="column-6">
                                             <?php if ($row['status'] == 2) : ?>
                                                 <span class="m-text21 w-size10 w-full-sm">
-                                                    Pembayaran di acc
+                                                    Pembayaran diproses
                                                 </span>
                                             <?php elseif ($row['status'] == 1) : ?>
                                                 <span class="m-text21 w-size10 w-full-sm">
@@ -122,15 +122,7 @@
                                         <td class="column-4">
                                             <?php if ($row['status'] == 1) : ?>
                                                 <span class="m-text22 w-size19 w-full-sm">
-                                                    Produk anda sedang dicek penjual
-                                                </span>
-                                            <?php elseif ($row['status'] == 2) : ?>
-                                                <span class="m-text22 w-size19 w-full-sm">
-                                                    Produk anda sudah di acc penjual
-                                                </span>
-                                            <?php elseif ($row['status'] == 3) : ?>
-                                                <span class="m-text22 w-size19 w-full-sm">
-                                                    Pesanan dibatalkan penjual, belum upload bukti
+                                                    Product anda sedang di proses dan segera dikirim
                                                 </span>
                                             <?php else : ?>
                                                 Pending Product

@@ -95,16 +95,9 @@
                                                     <a href="#" class="badge badge-success" data-toggle="modal">
                                                         <i class="fa fa-info-circle"></i> Lunas
                                                     </a>
-                                                <?php elseif ($rpj['status'] == 3) : ?>
-                                                    <a href="#" class="badge badge-danger" data-toggle="modal">
-                                                        <i class="fa fa-info-circle"></i> Dibatalkan
-                                                    </a>
                                                 <?php else : ?>
                                                     <a href="#konfirm<?= $rpj['id'] ?>" class="badge badge-warning" data-toggle="modal">
                                                         <i class="fa fa-edit"></i> Konfirmasi
-                                                    </a>
-                                                    <a href="#cancel<?= $rpj['id'] ?>" class="badge badge-danger" data-toggle="modal">
-                                                        <i class="fa fa-trash"></i> Batal
                                                     </a>
                                                 <?php endif; ?>
                                             </div>
@@ -129,7 +122,7 @@
     </div>
     <!-- /.container-fluid -->
 
-    <!-- Modal Konfirm -->
+    <!-- Modal Delete -->
     <?php foreach ($riwayat_penjualan as $rpj) : ?>
         <div class="modal fade" id="konfirm<?= $rpj['id']; ?>">
             <div class=" modal-dialog">
@@ -143,36 +136,7 @@
                     <form action="<?= base_url('Penjual/riwayat_penjualan'); ?>" method="post">
                         <div class="modal-body">
                             <input type="hidden" name="id" id="id" value="<?= $rpj['id']; ?>">
-                            <p class="text-center">Apakah anda yakin mengonfirmasi riwayat pesanan ini?</p>
-                        </div>
-                        <div class="modal-footer justify-content-end">
-                            <button type="submit" class="btn btn-info btn-outline-light">Ya</button>
-                            <button type="button" class="btn btn-danger btn-outline-light" data-dismiss="modal">Cancel</button>
-                        </div>
-                    </form>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-    <?php endforeach; ?>
-    <!-- /.modal -->
-
-    <!-- Modal Konfirm -->
-    <?php foreach ($riwayat_penjualan as $rpj) : ?>
-        <div class="modal fade" id="cancel<?= $rpj['id']; ?>">
-            <div class=" modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-danger">
-                        <h4 class="modal-title">Batal <?= $title ?></h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form action="<?= base_url('Penjual/cancel_transaction'); ?>" method="post">
-                        <div class="modal-body">
-                            <input type="hidden" name="id" id="id" value="<?= $rpj['id']; ?>">
-                            <p class="text-center">Apakah anda yakin membatalkan riwayat pesanan ini?</p>
+                            <p class="text-center">Apakah anda yakin mengonfirmasi pesanan ini?</p>
                         </div>
                         <div class="modal-footer justify-content-end">
                             <button type="submit" class="btn btn-info btn-outline-light">Ya</button>
