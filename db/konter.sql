@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 09 Jul 2021 pada 15.14
+-- Waktu pembuatan: 14 Jul 2021 pada 17.15
 -- Versi server: 10.4.11-MariaDB
 -- Versi PHP: 7.3.15
 
@@ -39,7 +39,7 @@ CREATE TABLE `barang` (
   `jenis` varchar(128) DEFAULT NULL,
   `harga` int(11) DEFAULT NULL,
   `stok` int(4) DEFAULT NULL,
-  `tanggal` timestamp NOT NULL DEFAULT current_timestamp(),
+  `tanggal` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -48,8 +48,8 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id`, `kode`, `name`, `image`, `jenis`, `harga`, `stok`, `tanggal`, `user_id`) VALUES
-(1, '22/06/2021 -BG- 001', 'Earphone', 'letter_E.png', 'Earphone Jack', 25000, 10, '2021-06-22 14:10:37', 2),
-(2, '22/06/2021 -BG- 002', 'Mouse', 'letter_M.png', 'Mouse', 16000, 9, '2021-06-22 14:11:13', 2),
+(1, '22/06/2021 -BG- 001', 'Headphone Raxer', 'letter_H2.png', 'Headphone Mahal', 156000, 20, '2021-06-22 14:10:37', 2),
+(2, '22/06/2021 -BG- 002', 'Mouse Rexus', 'letter_R1.png', 'Mouse Gold Fish', 167000, 18, '2021-07-14 15:13:58', 2),
 (3, '22/06/2021 -BG- 003', 'Laptop', 'letter_L.png', 'Electronic', 5000000, 15, '2021-06-22 14:51:41', 2),
 (6, '23/06/2021 -BG- 001', 'Vortex Vanwuisher', 'letter_V.png', 'Vortex', 23000, 10, '2021-06-23 13:11:22', 2),
 (7, '23/06/2021 -BG- 002', 'Lasegar', 'letter_L1.png', 'Minuman', 14000, 19, '2021-06-23 13:13:04', 2),
@@ -57,7 +57,7 @@ INSERT INTO `barang` (`id`, `kode`, `name`, `image`, `jenis`, `harga`, `stok`, `
 (9, '23/06/2021 -BG- 004', 'Headphone', 'letter_H.png', 'Headphone', 27000, 15, '2021-06-23 13:15:12', 2),
 (10, '23/06/2021 -BG- 005', 'Advan S7', 'letter_A1.png', 'Handphone', 1500000, 20, '2021-06-23 13:19:59', 2),
 (11, '23/06/2021 -BG- 006', 'Samsung J5', 'letter_S.png', 'Handphone', 500000, 15, '2021-06-23 13:20:22', 2),
-(12, '23/06/2021 -BG- 007', 'Asus Tuf 1212', 'letter_A2.png', 'Laptop', 5000000, 13, '2021-06-23 15:38:26', 4),
+(12, '23/06/2021 -BG- 007', 'Asus Tuf 1212', 'letter_A2.png', 'Laptop', 5000000, 12, '2021-07-14 15:14:07', 4),
 (13, '08/07/2021 -BG- 001', 'Exdous Pertama', 'letter_A3.png', 'Laptop', 8100000, 13, '2021-07-08 13:45:19', 2);
 
 -- --------------------------------------------------------
@@ -167,8 +167,10 @@ INSERT INTO `detail_transaksi` (`id_detail`, `barang_id`, `name`, `stok`, `harga
 (7, 2, 'Mouse', 1, 16000, 'letter_R.png', 16000, 2, '2021-06-24 00:58:07', 'letter_R.png', 2, 4),
 (8, 13, 'Exdous Pertama', 1, 8100000, 'letter_A3.png', 8100000, 1, '2021-07-09 19:31:15', 'letter_P.png', 2, 6),
 (9, 7, 'Lasegar', 1, 14000, 'letter_L.png', 14000, 1, '2021-07-09 19:23:57', 'letter_D.png', 2, 6),
-(10, 9, 'Headphone', 1, 27000, 'letter_H.png', NULL, NULL, '0000-00-00 00:00:00', '', 2, 7),
-(11, 13, 'Exdous Pertama', 1, 8100000, 'letter_A3.png', NULL, NULL, '0000-00-00 00:00:00', '', 2, 7);
+(10, 9, 'Headphone', 1, 27000, 'letter_H.png', 27000, 3, '2021-07-14 22:06:28', '', 2, 7),
+(11, 13, 'Exdous Pertama', 1, 8100000, 'letter_A3.png', 8100000, 3, '2021-07-14 22:06:05', 'letter_T1.png', 2, 7),
+(12, 2, 'Mouse Rexus', 1, 167000, 'letter_R1.png', NULL, NULL, '0000-00-00 00:00:00', '', 2, 8),
+(13, 12, 'Asus Tuf 1212', 1, 5000000, 'letter_A2.png', NULL, NULL, '0000-00-00 00:00:00', '', 4, 8);
 
 -- --------------------------------------------------------
 
@@ -236,7 +238,8 @@ INSERT INTO `transaksi` (`id`, `kode`, `pembeli_id`, `pembeli_name`, `pembeli_em
 (4, '24/06/2021 -ELC- 001', 3, 'Pembeli', 'pembeli@gmail.com', 'BNI', '0111099901110888', '6285000988123', 2, 'Penjual', 'BRI', '2147483647', '6287880900666', 16000, '2021-06-24 00:58:07', 2),
 (5, '24/06/2021 -ELC- 002', 3, 'Pembeli', 'pembeli@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 23000, NULL, NULL),
 (6, '09/07/2021 -ELC- 001', 3, 'Pembeli', 'pembeli@gmail.com', 'BRI', '0001009200120045', '6285000988000', 2, 'Penjual', 'BRI', '2147483647', '6287880900666', 8114000, '2021-07-09 19:31:15', 1),
-(7, '09/07/2021 -ELC- 002', 3, 'Pembeli', 'pembeli@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 8127000, NULL, NULL);
+(7, '09/07/2021 -ELC- 002', 3, 'Pembeli', 'pembeli@gmail.com', 'BNI', '9009100180017120', '6285000988000', 2, 'Penjual', 'BRI', '0007000100020003', '6287880900666', 8127000, '2021-07-14 22:06:28', 3),
+(8, '14/07/2021 -ELC- 001', 3, 'Pembeli', 'pembeli@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5167000, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -461,7 +464,7 @@ ALTER TABLE `barang`
 -- AUTO_INCREMENT untuk tabel `barang_keluar`
 --
 ALTER TABLE `barang_keluar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_masuk`
@@ -479,7 +482,7 @@ ALTER TABLE `data_banner`
 -- AUTO_INCREMENT untuk tabel `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
-  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT untuk tabel `jenis`
@@ -491,7 +494,7 @@ ALTER TABLE `jenis`
 -- AUTO_INCREMENT untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
