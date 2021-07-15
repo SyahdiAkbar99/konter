@@ -113,9 +113,9 @@ class Pembeli extends CI_Controller
         ];
 
         // echo '<pre>';
-        // print_r($data);
-        // die;
+        // print_r($cart->stok);
         // echo '</pre>';
+        // die;
 
         $insertmin = array(
             'barang_id' => $cart->id,

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 09 Jul 2021 pada 15.14
--- Versi server: 10.4.11-MariaDB
--- Versi PHP: 7.3.15
+-- Waktu pembuatan: 11 Jul 2021 pada 15.44
+-- Versi server: 10.4.6-MariaDB
+-- Versi PHP: 7.3.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `konter`
 --
-CREATE DATABASE IF NOT EXISTS `konter` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `konter`;
 
 -- --------------------------------------------------------
 
@@ -30,7 +28,6 @@ USE `konter`;
 -- Struktur dari tabel `barang`
 --
 
-DROP TABLE IF EXISTS `barang`;
 CREATE TABLE `barang` (
   `id` int(11) NOT NULL,
   `kode` varchar(128) DEFAULT NULL,
@@ -48,17 +45,9 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id`, `kode`, `name`, `image`, `jenis`, `harga`, `stok`, `tanggal`, `user_id`) VALUES
-(1, '22/06/2021 -BG- 001', 'Earphone', 'letter_E.png', 'Earphone Jack', 25000, 10, '2021-06-22 14:10:37', 2),
-(2, '22/06/2021 -BG- 002', 'Mouse', 'letter_M.png', 'Mouse', 16000, 9, '2021-06-22 14:11:13', 2),
-(3, '22/06/2021 -BG- 003', 'Laptop', 'letter_L.png', 'Electronic', 5000000, 15, '2021-06-22 14:51:41', 2),
-(6, '23/06/2021 -BG- 001', 'Vortex Vanwuisher', 'letter_V.png', 'Vortex', 23000, 10, '2021-06-23 13:11:22', 2),
-(7, '23/06/2021 -BG- 002', 'Lasegar', 'letter_L1.png', 'Minuman', 14000, 19, '2021-06-23 13:13:04', 2),
-(8, '23/06/2021 -BG- 003', 'Audiotron', 'letter_A.png', 'Electronic', 15000, 15, '2021-06-23 13:13:56', 2),
-(9, '23/06/2021 -BG- 004', 'Headphone', 'letter_H.png', 'Headphone', 27000, 15, '2021-06-23 13:15:12', 2),
-(10, '23/06/2021 -BG- 005', 'Advan S7', 'letter_A1.png', 'Handphone', 1500000, 20, '2021-06-23 13:19:59', 2),
-(11, '23/06/2021 -BG- 006', 'Samsung J5', 'letter_S.png', 'Handphone', 500000, 15, '2021-06-23 13:20:22', 2),
-(12, '23/06/2021 -BG- 007', 'Asus Tuf 1212', 'letter_A2.png', 'Laptop', 5000000, 13, '2021-06-23 15:38:26', 4),
-(13, '08/07/2021 -BG- 001', 'Exdous Pertama', 'letter_A3.png', 'Laptop', 8100000, 13, '2021-07-08 13:45:19', 2);
+(17, '10/07/2021 -BG- 002', 'Boult Audio ProBass Q Over-Ear Wireless Headphone', 'images(18)2.jpg', 'Headset', 150000, 48, '2021-07-10 08:23:17', 8),
+(18, '10/07/2021 -BG- 003', 'Sound', 'images(19).jpg', 'Speaker', 200000, 20, '2021-07-10 08:29:55', 8),
+(19, '10/07/2021 -BG- 004', 'Charger Original New 20W Iphone 12', '9f2a5959-9171-457a-9a02-834e4ea940743.jpg', 'Charger', 400000, 99, '2021-07-10 08:33:54', 8);
 
 -- --------------------------------------------------------
 
@@ -66,7 +55,6 @@ INSERT INTO `barang` (`id`, `kode`, `name`, `image`, `jenis`, `harga`, `stok`, `
 -- Struktur dari tabel `barang_keluar`
 --
 
-DROP TABLE IF EXISTS `barang_keluar`;
 CREATE TABLE `barang_keluar` (
   `id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
@@ -77,7 +65,6 @@ CREATE TABLE `barang_keluar` (
 --
 -- Trigger `barang_keluar`
 --
-DROP TRIGGER IF EXISTS `t__keluar`;
 DELIMITER $$
 CREATE TRIGGER `t__keluar` AFTER INSERT ON `barang_keluar` FOR EACH ROW BEGIN
 	UPDATE barang SET stok = stok - NEW.stok WHERE id = NEW.barang_id;
@@ -91,7 +78,6 @@ DELIMITER ;
 -- Struktur dari tabel `barang_masuk`
 --
 
-DROP TABLE IF EXISTS `barang_masuk`;
 CREATE TABLE `barang_masuk` (
   `id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
@@ -102,7 +88,6 @@ CREATE TABLE `barang_masuk` (
 --
 -- Trigger `barang_masuk`
 --
-DROP TRIGGER IF EXISTS `t_masuk`;
 DELIMITER $$
 CREATE TRIGGER `t_masuk` AFTER INSERT ON `barang_masuk` FOR EACH ROW BEGIN
 	UPDATE barang SET stok = stok + NEW.stok WHERE id = NEW.barang_id;
@@ -116,7 +101,6 @@ DELIMITER ;
 -- Struktur dari tabel `data_banner`
 --
 
-DROP TABLE IF EXISTS `data_banner`;
 CREATE TABLE `data_banner` (
   `id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
@@ -131,9 +115,8 @@ CREATE TABLE `data_banner` (
 --
 
 INSERT INTO `data_banner` (`id`, `name`, `image`, `descript`, `banner_date`, `urutan`) VALUES
-(1, 'Slide-01', 'slide-001.jpg', 'This is for you', '2021-06-20 13:30:42', 1),
-(2, 'Slide-02', 'slide-002.jpg', 'Yeah you can see this', '2021-06-20 13:28:19', 2),
-(3, 'Slide-03', 'slide-003.jpg', 'Now you can see me', '2021-06-20 13:29:04', 3);
+(5, 'ASEK', 'slide-02.jpg', 'Uhuh', '2021-07-10 08:38:11', 1),
+(6, 'Yoi', 'alexandru-acea-GhwCef9VRr4-unsplash.jpg', 'Oke', '2021-07-10 08:38:46', 2);
 
 -- --------------------------------------------------------
 
@@ -141,7 +124,6 @@ INSERT INTO `data_banner` (`id`, `name`, `image`, `descript`, `banner_date`, `ur
 -- Struktur dari tabel `detail_transaksi`
 --
 
-DROP TABLE IF EXISTS `detail_transaksi`;
 CREATE TABLE `detail_transaksi` (
   `id_detail` int(11) NOT NULL,
   `barang_id` int(11) NOT NULL,
@@ -157,26 +139,12 @@ CREATE TABLE `detail_transaksi` (
   `transaksi_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data untuk tabel `detail_transaksi`
---
-
-INSERT INTO `detail_transaksi` (`id_detail`, `barang_id`, `name`, `stok`, `harga`, `image`, `total`, `status`, `tanggal_detail`, `image_bayar`, `penjual_id`, `transaksi_id`) VALUES
-(5, 1, 'Earphone', 2, 25000, 'letter_F.png', 50000, 2, '2021-06-24 00:42:55', 'letter_F.png', 2, 3),
-(6, 12, 'Asus Tuf 1212', 2, 5000000, 'letter_T.png', 10000000, 2, '2021-06-24 00:42:25', 'letter_T.png', 4, 3),
-(7, 2, 'Mouse', 1, 16000, 'letter_R.png', 16000, 2, '2021-06-24 00:58:07', 'letter_R.png', 2, 4),
-(8, 13, 'Exdous Pertama', 1, 8100000, 'letter_A3.png', 8100000, 1, '2021-07-09 19:31:15', 'letter_P.png', 2, 6),
-(9, 7, 'Lasegar', 1, 14000, 'letter_L.png', 14000, 1, '2021-07-09 19:23:57', 'letter_D.png', 2, 6),
-(10, 9, 'Headphone', 1, 27000, 'letter_H.png', NULL, NULL, '0000-00-00 00:00:00', '', 2, 7),
-(11, 13, 'Exdous Pertama', 1, 8100000, 'letter_A3.png', NULL, NULL, '0000-00-00 00:00:00', '', 2, 7);
-
 -- --------------------------------------------------------
 
 --
 -- Struktur dari tabel `jenis`
 --
 
-DROP TABLE IF EXISTS `jenis`;
 CREATE TABLE `jenis` (
   `id` int(11) NOT NULL,
   `name` varchar(128) DEFAULT NULL
@@ -199,7 +167,13 @@ INSERT INTO `jenis` (`id`, `name`) VALUES
 (10, 'Handphone'),
 (11, 'Handphone'),
 (12, 'Laptop'),
-(13, 'Laptop');
+(13, 'Laptop'),
+(14, 'Charger'),
+(15, 'Headset'),
+(16, 'Charger'),
+(17, 'Headset'),
+(18, 'Speaker'),
+(19, 'Charger');
 
 -- --------------------------------------------------------
 
@@ -207,7 +181,6 @@ INSERT INTO `jenis` (`id`, `name`) VALUES
 -- Struktur dari tabel `transaksi`
 --
 
-DROP TABLE IF EXISTS `transaksi`;
 CREATE TABLE `transaksi` (
   `id` int(11) NOT NULL,
   `kode` varchar(128) NOT NULL,
@@ -227,24 +200,12 @@ CREATE TABLE `transaksi` (
   `status` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data untuk tabel `transaksi`
---
-
-INSERT INTO `transaksi` (`id`, `kode`, `pembeli_id`, `pembeli_name`, `pembeli_email`, `pembeli_bank`, `pembeli_rekening`, `pembeli_telp`, `penjual_id`, `penjual_name`, `penjual_bank`, `penjual_rekening`, `penjual_telp`, `total_transaksi`, `tanggal_transaksi`, `status`) VALUES
-(3, '23/06/2021 -ELC- 001', 3, 'Pembeli', 'pembeli@gmail.com', 'BNI', '0111099901110888', '6285000988123', 2, 'Penjual', 'BRI', '2147483647', '6287880900666', 10050000, '2021-06-24 00:42:55', 2),
-(4, '24/06/2021 -ELC- 001', 3, 'Pembeli', 'pembeli@gmail.com', 'BNI', '0111099901110888', '6285000988123', 2, 'Penjual', 'BRI', '2147483647', '6287880900666', 16000, '2021-06-24 00:58:07', 2),
-(5, '24/06/2021 -ELC- 002', 3, 'Pembeli', 'pembeli@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 23000, NULL, NULL),
-(6, '09/07/2021 -ELC- 001', 3, 'Pembeli', 'pembeli@gmail.com', 'BRI', '0001009200120045', '6285000988000', 2, 'Penjual', 'BRI', '2147483647', '6287880900666', 8114000, '2021-07-09 19:31:15', 1),
-(7, '09/07/2021 -ELC- 002', 3, 'Pembeli', 'pembeli@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 8127000, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
 -- Struktur dari tabel `user`
 --
 
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `name` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
@@ -266,10 +227,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `name`, `email`, `image`, `password`, `no_telp`, `alamat`, `role_id`, `is_active`, `date_created`, `no_rekening`, `nama_bank`) VALUES
 (1, 'Admin', 'admin@gmail.com', 'avatar.png', '$2y$10$OCvmvrtPHbClwbGjqQY.4u1s2jGquK80tMMqd.nWlDNqBaxohnJXy', '6281336787990', 'Jl Admin 221', 1, 1, 1621959515, '-', '-'),
-(2, 'Penjual', 'penjual@gmail.com', 'avatar4.png', '$2y$10$xJB2/kbPXo6koCs9N0Tg1e9zMtEKNDWcK2KZghxeDm9RZ5UxdVJWa', '6287880900666', 'Jl Penjual 887', 2, 1, 1621959595, '0007000100020003', 'BRI'),
-(3, 'Pembeli', 'pembeli@gmail.com', 'avatar3.png', '$2y$10$fE9TFkngBIsAWKOpGvj0Y.LOcDcVFjc0GMjax2RGM3fhyqaa8plci', '6285000988000', 'Jl Pembeli 223', 3, 1, 1621959665, '-', '-'),
-(4, 'Veronica', 'veronica11@gmail.com', 'user3-128x128.jpg', '$2y$10$pGw20NXc.G984ZrI9Itv7O5gysacVUmBfhOnZGF2R4ITqZiI.tTKG', '62628777000911', 'Jl Kutai No 9A Tamanbaru Banyuwangi', 2, 1, 1624462602, '0021001200110005', 'BANK PEMBANGUNAN DAERAH JAWA TIMUR'),
-(5, 'Vica', 'vica@gmail.com', 'default.png', '$2y$10$uDgLOLfkb0zuV9CLAs3cj.4ZLU8vYsqVnsPsmkbcvpN4HUPaDS.n.', '62897881231236', 'Jl Kutai No 9B Tamanbaru Banyuwangi', 3, 1, 1624472045, '-', '-');
+(6, 'Firman', 'firmanagebimantara@gmail.com', 'default.png', '$2y$10$9zXYUMUHizAe2rKqBqp51O3QnoX/KLFQB6bj7zPgHGODzTvZm3z4m', '6289688492288', 'Besuki', 3, 1, 1625844212, '123456789123', 'BRI'),
+(8, 'Bimantara', 'muhfirmanagebimantara@gmail.com', 'default.png', '$2y$10$4W7CkRAHmQW6BiSvJANvKOAHW75W3Sm/TYfidVL5XIUZe9MqSNrbG', '6289688492283', 'Situbondo', 2, 1, 1625905274, '1032432432653601', 'BNI');
 
 -- --------------------------------------------------------
 
@@ -277,7 +236,6 @@ INSERT INTO `user` (`id`, `name`, `email`, `image`, `password`, `no_telp`, `alam
 -- Struktur dari tabel `user_access_menu`
 --
 
-DROP TABLE IF EXISTS `user_access_menu`;
 CREATE TABLE `user_access_menu` (
   `id` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
@@ -299,7 +257,6 @@ INSERT INTO `user_access_menu` (`id`, `role_id`, `menu_id`) VALUES
 -- Struktur dari tabel `user_menu`
 --
 
-DROP TABLE IF EXISTS `user_menu`;
 CREATE TABLE `user_menu` (
   `id` int(11) NOT NULL,
   `menu` varchar(128) NOT NULL,
@@ -321,7 +278,6 @@ INSERT INTO `user_menu` (`id`, `menu`, `urutan`) VALUES
 -- Struktur dari tabel `user_role`
 --
 
-DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
   `id` int(11) NOT NULL,
   `role` varchar(128) NOT NULL
@@ -342,7 +298,6 @@ INSERT INTO `user_role` (`id`, `role`) VALUES
 -- Struktur dari tabel `user_sub_menu`
 --
 
-DROP TABLE IF EXISTS `user_sub_menu`;
 CREATE TABLE `user_sub_menu` (
   `id` int(11) NOT NULL,
   `menu_id` int(11) NOT NULL,
@@ -379,7 +334,8 @@ INSERT INTO `user_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `urutan`, 
 -- Indeks untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indeks untuk tabel `barang_keluar`
@@ -403,7 +359,9 @@ ALTER TABLE `data_banner`
 -- Indeks untuk tabel `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
-  ADD PRIMARY KEY (`id_detail`);
+  ADD PRIMARY KEY (`id_detail`),
+  ADD KEY `penjual_id` (`penjual_id`),
+  ADD KEY `transaksi_id` (`transaksi_id`);
 
 --
 -- Indeks untuk tabel `jenis`
@@ -415,7 +373,8 @@ ALTER TABLE `jenis`
 -- Indeks untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `penjual_id` (`penjual_id`);
 
 --
 -- Indeks untuk tabel `user`
@@ -455,49 +414,49 @@ ALTER TABLE `user_sub_menu`
 -- AUTO_INCREMENT untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_keluar`
 --
 ALTER TABLE `barang_keluar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_masuk`
 --
 ALTER TABLE `barang_masuk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT untuk tabel `data_banner`
 --
 ALTER TABLE `data_banner`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
-  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT untuk tabel `jenis`
 --
 ALTER TABLE `jenis`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `user_access_menu`
@@ -522,6 +481,16 @@ ALTER TABLE `user_role`
 --
 ALTER TABLE `user_sub_menu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+--
+
+--
+-- Ketidakleluasaan untuk tabel `barang`
+--
+ALTER TABLE `barang`
+  ADD CONSTRAINT `barang_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

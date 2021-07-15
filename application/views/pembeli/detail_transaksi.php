@@ -91,11 +91,11 @@
                                     </td>
                                     <td class="column-1"></td>
                                     <td class="column-4">
-                                        <?php if ($row['status'] == 2 && $row['image'] != NULL) : ?>
+                                        <?php if ($row['status'] == 2 && $row['image_bayar'] != NULL) : ?>
                                             <div class="badge badge-primary m-r-30">
                                                 <i class="fa fa-circle"></i> Confirmed
                                             </div>
-                                        <?php elseif ($row['status'] == 1 && $row['image'] != NULL) : ?>
+                                        <?php elseif ($row['status'] == 1 && $row['image_bayar'] != NULL) : ?>
                                             <div class="badge badge-primary m-r-30">
                                                 <i class="fa fa-circle"></i> Dicek Penjual, Mohon Tunggu
                                             </div>

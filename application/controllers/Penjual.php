@@ -18,7 +18,7 @@ class Penjual extends CI_Controller
         $data['transaksi'] = $this->dpj->getCountPendapatan($data['user']['id']);
         $data['grafik'] = $this->dpj->transaction($data['user']['id']);
         // echo '<pre>';
-        // print_r($data['grafik']);
+        // print_r($data['transaksi']);
         // echo '</pre>';
         // die;
         $this->load->view('templates/penjual/header', $data);

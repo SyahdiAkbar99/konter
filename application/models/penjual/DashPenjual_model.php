@@ -21,8 +21,8 @@ class DashPenjual_model extends CI_Model
         $query = "SELECT SUM(detail_transaksi.total) AS pendapatan, DATE_FORMAT(detail_transaksi.tanggal_detail, '%M %Y') AS bulan
         FROM detail_transaksi
           WHERE
-            detail_transaksi.penjual_id = $id
-              
+            detail_transaksi.penjual_id = $id AND
+            detail_transaksi.status = 2              
               GROUP BY MONTH(detail_transaksi.tanggal_detail)
               HAVING SUM(detail_transaksi.total)
               ORDER BY detail_transaksi.tanggal_detail DESC
@@ -38,7 +38,7 @@ class DashPenjual_model extends CI_Model
         $query = "SELECT COUNT(detail_transaksi.status) AS banyakTransaksi, DATE_FORMAT(detail_transaksi.tanggal_detail, '%M %Y') AS bulan
         FROM detail_transaksi
           WHERE
-            detail_transaksi.status = 1 AND detail_transaksi.penjual_id = $id
+            detail_transaksi.status = 2 AND detail_transaksi.penjual_id = $id
               
               GROUP BY MONTH(detail_transaksi.tanggal_detail)
               HAVING COUNT(detail_transaksi.status)

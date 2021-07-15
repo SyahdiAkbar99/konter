@@ -120,7 +120,7 @@
                                         </td>
                                         <td class="column-1"></td>
                                         <td class="column-4">
-                                            <?php if ($row['status'] == 1) : ?>
+                                            <?php if ($row['status'] == 2) : ?>
                                                 <span class="m-text22 w-size19 w-full-sm">
                                                     Product anda sedang di proses dan segera dikirim
                                                 </span>
