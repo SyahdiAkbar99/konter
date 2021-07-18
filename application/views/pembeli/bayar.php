@@ -184,9 +184,10 @@
                                 <h6 class="m-text21 w-size19 w-full-sm m-t-10">
                                     Upload Bukti:
                                 </h6>
-                                <div class="bor8 bg0 m-b-22">
-                                    <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="file" name="image" id="image">
+                                <div class="bor8 bg0 m-b-0">
+                                    <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="file" name="image" id="image" required>
                                 </div>
+                                <?= form_error('image', '<small class="text-danger">', '</small>'); ?>
                             </div>
                         </div>
                     </div>

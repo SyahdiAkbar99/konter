@@ -323,12 +323,6 @@ class Pembeli extends CI_Controller
 
     public function bayar()
     {
-        $data['title'] = 'Checkout';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-        $data['data_banner'] = $this->dpm->data_banner();
-        $data['penjual'] = $this->dpm->seller_only($this->input->post('penjual_id'));
-        $data['detail'] = $this->dpm->per_trans($this->input->post('id'));
-
         $this->form_validation->set_rules('pembeli_name', 'Name', 'required|trim', [
             'required' => '%s tidak boleh kosong',
         ]);
@@ -344,8 +338,19 @@ class Pembeli extends CI_Controller
         $this->form_validation->set_rules('pembeli_telp', 'Telepon', 'required|trim', [
             'required' => '%s tidak boleh kosong',
         ]);
+        if (empty($_FILES['image']['name'])) {
+            $this->form_validation->set_rules('image', 'Upload Bukti', 'required', [
+                'required' => '*%s tidak boleh kosong',
+            ]);
+        }
 
         if ($this->form_validation->run() == false) {
+            $data['title'] = 'Bayar';
+            $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+            $data['data_banner'] = $this->dpm->data_banner();
+            $data['penjual'] = $this->dpm->seller_only($this->input->post('penjual_id'));
+            $data['detail'] = $this->dpm->per_trans($this->input->post('id'));
+
             $this->load->view('templates/pembeli/header', $data);
             $this->load->view('templates/pembeli/navbar', $data);
             $this->load->view('pembeli/bayar', $data);

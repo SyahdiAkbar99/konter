@@ -58,11 +58,15 @@
                                 <th class="column-1">Product</th>
                                 <th class="column-1"></th>
                                 <th class="column-2">Quantity</th>
+                                <th class="column-1"></th>
                                 <th class="column-3">Harga</th>
                                 <th class="column-2"></th>
+                                <th class="column-1"></th>
                                 <th class="column-3">Total Harga</th>
                                 <td class="column-1"></td>
                                 <th class="column-4 text-center">Aksi</th>
+                                <td class="column-1"></td>
+                                <th class="column-4 text-center">Status</th>
                                 <td class="column-1"></td>
 
                             </tr>
@@ -78,9 +82,11 @@
                                         </div>
                                     </td>
                                     <td class="column-1"></td>
-                                    <td class="column-2 p-l-30"> <?= $row['stok']; ?> </td>
+                                    <td class="column-2 p-l-30"> <?= $row['stok']; ?></td>
+                                    <th class="column-1"></th>
                                     <td class="column-3"><?= 'Rp' . number_format($row['harga'], 2, ',', '.'); ?></td>
-                                    <th class="column-2"></th>
+                                    <td class="column-2"></td>
+                                    <td class="column-1"></td>
                                     <td class="column-3">
                                         <?php
                                         $sum = $row['stok'] * $row['harga'];
@@ -99,18 +105,48 @@
                                             <div class="badge badge-primary m-r-30">
                                                 <i class="fa fa-circle"></i> Dicek Penjual, Mohon Tunggu
                                             </div>
+                                        <?php elseif ($row['status'] == 1 && $row['image_bayar'] == NULL) : ?>
+                                            <div class="badge badge-warning m-r-30">
+                                                <i class="fa fa-info-circle"></i> Bukti Bayar belum diupload, Sedang dicek penjual
+                                            </div>
                                         <?php else : ?>
                                             <form action="<?= base_url('Pembeli/bayar/') ?>" method="post">
                                                 <input type="hidden" name="penjual_id" id="penjual_id" value="<?= $row['penjual_id']; ?>">
                                                 <input type="hidden" name="id" id="id" value="<?= $row['id_detail']; ?>">
                                                 <input type="hidden" name="pembeli_name" id="pembeli_name" value="<?= $user['name'] ?>">
                                                 <input type="hidden" name="pembeli_email" id="pembeli_email" value="<?= $user['email'] ?>">
+                                                <input type="hidden" name="pembeli_bank" id="pembeli_bank" value="<?= $user['nama_bank'] ?>">
+                                                <input type="hidden" name="pembeli_rekening" id="pembeli_rekening" value="<?= $user['no_rekening'] ?>">
 
                                                 <input type="hidden" name="pembeli_telp" id="pembeli_telp" value="<?= $user['no_telp'] ?>">
                                                 <button type="submit" class="badge badge-primary m-r-30">
                                                     <i class="fa fa-upload"></i> Bayar
                                                 </button>
                                             </form>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td class="column-1"></td>
+                                    <td class="column-4 text-center">
+                                        <?php if ($row['status'] == 2 && $row['image_bayar'] != NULL) : ?>
+                                            <div class="badge badge-primary m-r-30">
+                                                <i class="fa fa-circle"></i> Confirmed
+                                            </div>
+                                        <?php elseif ($row['status'] == 1 && $row['image_bayar'] != NULL) : ?>
+                                            <div class="badge badge-primary m-r-30">
+                                                <i class="fa fa-circle"></i> Dicek Penjual, Mohon Tunggu
+                                            </div>
+                                        <?php elseif ($row['status'] == 1 && $row['image_bayar'] == NULL) : ?>
+                                            <div class="btn btn-warning m-r-30">
+                                                <i class="fa fa-info-circle text-danger"></i> Bukti Bayar belum diupload dan pesanan dicek penjual
+                                            </div>
+                                        <?php elseif ($row['status'] == 3) : ?>
+                                            <div class="btn btn-danger m-r-30">
+                                                <i class="fa fa-info-circle text-light"></i> Pesanan anda ditolak penjual, Bukti Bayar belum diupload
+                                            </div>
+                                        <?php else : ?>
+                                            <div class="btn btn-primary m-r-30 text-dark">
+                                                <i class="fa fa-info-circle text-danger"></i> Belum dibayar
+                                            </div>
                                         <?php endif; ?>
                                     </td>
                                     <td class="column-1"></td>

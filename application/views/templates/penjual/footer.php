@@ -66,12 +66,17 @@
 <!-- Page level custom scripts -->
 <script src="<?= base_url('assets/admin/js/chart-area-demo.js') ?>"></script>
 
-
+<script>
+    $('.custom-file-input').on('change', function() {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    })
+</script>
 <script type="text/javascript">
     //Button Export Data Tanaman Menu
     $(document).ready(function() {
         $('#barang-1').DataTable({
-            dom: 'lBfrtip',
+            dom: 'lfrtip',
             autoWidth: true,
             lengthMenu: [
                 [3, 5, 10, 25, 50, -1],
@@ -104,7 +109,7 @@
 
     $(document).ready(function() {
         $('#barang').DataTable({
-            dom: 'lBfrtip',
+            dom: 'lfrtip',
             autoWidth: true,
             lengthMenu: [
                 [1, 2, 3, 5, 10, 25, 50, -1],
@@ -137,23 +142,26 @@
 </script>
 <script>
     //Edit Modal Data Tanaman
-    $(document).ready(function() {
-        // Untuk sunting
-        $('#edit-barang').on('show.bs.modal', function(event) {
-            // Tombol dimana modal di tampilkan
-            var div = $(event.relatedTarget);
-            var modal = $(this);
 
-            // Isi nilai pada field
-            modal.find('#id').attr("value", div.data('id'));
-            modal.find('#kode').attr("value", div.data('kode'));
-            modal.find('#nama').attr("value", div.data('name'));
-            modal.find('#image').attr("value", div.data('image'));
-            modal.find('#njenis').attr("value", div.data('jenis'));
-            modal.find('#stok').attr("value", div.data('stok'));
-            modal.find('#harga').attr("value", div.data('harga'));
-        });
-    });
+    // $(document).ready(function() {
+
+    // Untuk sunting
+
+    //     $('#edit-barang').on('show.bs.modal', function(event) {
+    //         // Tombol dimana modal di tampilkan
+    //         var div = $(event.relatedTarget);
+    //         var modal = $(this);
+
+    //         // Isi nilai pada field
+    //         modal.find('#id').attr("value", div.data('id'));
+    //         modal.find('#kode').attr("value", div.data('kode'));
+    //         modal.find('#nama').attr("value", div.data('name'));
+    //         modal.find('#image').attr("value", div.data('image'));
+    //         modal.find('#njenis').attr("value", div.data('jenis'));
+    //         modal.find('#stok').attr("value", div.data('stok'));
+    //         modal.find('#harga').attr("value", div.data('harga'));
+    //     });
+    // });
 
     // Area Chart Example
     var ctx = document.getElementById("chartPenjual");

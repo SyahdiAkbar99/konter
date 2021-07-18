@@ -58,10 +58,8 @@ class DashPenjual_model extends CI_Model
 
     public function get_jenis()
     {
-        $query = $this->db->get('jenis');
-        if ($query->num_rows() > 0) {
-            return $query->result_array();
-        }
+        $query = "SELECT * FROM jenis GROUP BY jenis.name";
+        return $this->db->query($query)->result_array();
     }
     public function insert_barang($data)
     {
@@ -76,7 +74,7 @@ class DashPenjual_model extends CI_Model
     //Data Riwayat Penjualan
     public function riwayat_penjualan($id)
     {
-        $query = "SELECT * FROM detail_transaksi
+        $query = "SELECT detail_transaksi.id_detail, detail_transaksi.barang_id, detail_transaksi.name, detail_transaksi.stok, detail_transaksi.harga, detail_transaksi.image, detail_transaksi.total, detail_transaksi.status, detail_transaksi.tanggal_detail, detail_transaksi.image_bayar, detail_transaksi.penjual_id, detail_transaksi.transaksi_id, transaksi.id, transaksi.kode, transaksi.pembeli_name, transaksi.pembeli_telp, transaksi.tanggal_transaksi FROM detail_transaksi
                      JOIN transaksi ON detail_transaksi.transaksi_id = transaksi.id WHERE detail_transaksi.penjual_id = $id";
         return $this->db->query($query)->result_array();
     }

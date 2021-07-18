@@ -83,9 +83,9 @@
                                         <?php if ($rpj['status'] == 2) : ?>
                                             Lunas
                                         <?php elseif ($rpj['status'] == 1) : ?>
-                                            Dicek Penjual
+                                            Sudah dibayar, Silahkan dicek
                                         <?php else : ?>
-                                            Belum Lunas
+                                            Belum Lunas, Tunggu 1 x 24 jam untuk batal
                                         <?php endif; ?>
                                     </td>
                                     <td>
@@ -96,8 +96,11 @@
                                                         <i class="fa fa-info-circle"></i> Lunas
                                                     </a>
                                                 <?php else : ?>
-                                                    <a href="#konfirm<?= $rpj['id'] ?>" class="badge badge-warning" data-toggle="modal">
+                                                    <a href="#konfirm<?= $rpj['id_detail'] ?>" class="badge badge-warning" data-toggle="modal">
                                                         <i class="fa fa-edit"></i> Konfirmasi
+                                                    </a>
+                                                    <a href="#batal<?= $rpj['id_detail'] ?>" class="badge badge-danger" data-toggle="modal">
+                                                        <i class="fa fa-times"></i> Batal
                                                     </a>
                                                 <?php endif; ?>
                                             </div>
@@ -122,9 +125,9 @@
     </div>
     <!-- /.container-fluid -->
 
-    <!-- Modal Delete -->
+    <!-- Modal Konfrim -->
     <?php foreach ($riwayat_penjualan as $rpj) : ?>
-        <div class="modal fade" id="konfirm<?= $rpj['id']; ?>">
+        <div class="modal fade" id="konfirm<?= $rpj['id_detail']; ?>">
             <div class=" modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-warning">
@@ -135,8 +138,37 @@
                     </div>
                     <form action="<?= base_url('Penjual/riwayat_penjualan'); ?>" method="post">
                         <div class="modal-body">
-                            <input type="hidden" name="id" id="id" value="<?= $rpj['id']; ?>">
+                            <input type="hidden" name="id" id="id" value="<?= $rpj['id_detail']; ?>">
                             <p class="text-center">Apakah anda yakin mengonfirmasi pesanan ini?</p>
+                        </div>
+                        <div class="modal-footer justify-content-end">
+                            <button type="submit" class="btn btn-info btn-outline-light">Ya</button>
+                            <button type="button" class="btn btn-danger btn-outline-light" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+    <?php endforeach; ?>
+    <!-- /.modal -->
+
+    <!-- Modal Batal -->
+    <?php foreach ($riwayat_penjualan as $rpj) : ?>
+        <div class="modal fade" id="batal<?= $rpj['id_detail']; ?>">
+            <div class=" modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger">
+                        <h4 class="modal-title">Batal <?= $title ?></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="<?= base_url('Penjual/cancel_trans'); ?>" method="post">
+                        <div class="modal-body">
+                            <input type="hidden" name="id" id="id" value="<?= $rpj['id_detail']; ?>">
+                            <p class="text-center">Apakah anda yakin membatalkan pesanan ini?</p>
                         </div>
                         <div class="modal-footer justify-content-end">
                             <button type="submit" class="btn btn-info btn-outline-light">Ya</button>

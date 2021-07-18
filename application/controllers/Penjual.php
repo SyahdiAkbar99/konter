@@ -303,14 +303,14 @@ class Penjual extends CI_Controller
             $this->load->view('penjual/riwayat_penjualan', $data);
             $this->load->view('templates/penjual/footer', $data);
         } else {
-            $id = $this->input->post('id');
+            $detail = $this->db->get_where('detail_transaksi', ['id_detail' => $this->input->post('id')])->row_array();
             $data = [
                 'status' => 2,
             ];
-            $this->db->where('transaksi_id', $id);
+            $this->db->where('id_detail', $detail['id_detail']);
             $query = $this->db->update('detail_transaksi', $data);
             if ($query) {
-                $this->db->where('id', $id);
+                $this->db->where('id', $detail['transaksi_id']);
                 $query1 = $this->db->update('transaksi', $data);
                 if ($query1) {
                     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Produk berhasil dikonfirmasi
@@ -329,6 +329,56 @@ class Penjual extends CI_Controller
                 }
             } else {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Produk gagal dikonfirmasi detail
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>');
+                redirect('Penjual/riwayat_penjualan');
+            }
+        }
+    }
+
+    public function cancel_trans()
+    {
+        $this->form_validation->set_rules('id', 'Id', 'required|trim');
+        if ($this->form_validation->run() == false) {
+            $data['title'] = 'Riwayat Penjualan';
+            $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+            //tampilkan data tanaman sesuai user
+            $data['riwayat_penjualan'] = $this->dpj->riwayat_penjualan($data['user']['id']);
+            $this->load->view('templates/penjual/header', $data);
+            $this->load->view('templates/penjual/sidebar', $data);
+            $this->load->view('templates/penjual/navbar', $data);
+            $this->load->view('penjual/riwayat_penjualan', $data);
+            $this->load->view('templates/penjual/footer', $data);
+        } else {
+            $detail = $this->db->get_where('detail_transaksi', ['id_detail' => $this->input->post('id')])->row_array();
+            $data = [
+                'status' => 3,
+            ];
+            $this->db->where('id_detail', $detail['id_detail']);
+            $query = $this->db->update('detail_transaksi', $data);
+            if ($query) {
+                $this->db->where('id', $detail['transaksi_id']);
+                $query1 = $this->db->update('transaksi', $data);
+                if ($query1) {
+                    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Produk berhasil dibatalin
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>');
+                    redirect('Penjual/riwayat_penjualan');
+                } else {
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Produk gagal dibatalin
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>');
+                    redirect('Penjual/riwayat_penjualan');
+                }
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Produk gagal dibatalin detail
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
