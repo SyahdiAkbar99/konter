@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 11 Jul 2021 pada 15.44
--- Versi server: 10.4.6-MariaDB
--- Versi PHP: 7.3.9
+-- Waktu pembuatan: 18 Jul 2021 pada 11.34
+-- Versi server: 10.4.11-MariaDB
+-- Versi PHP: 7.3.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `konter`
 --
+CREATE DATABASE IF NOT EXISTS `konter` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `konter`;
 
 -- --------------------------------------------------------
 
@@ -28,6 +30,7 @@ SET time_zone = "+00:00";
 -- Struktur dari tabel `barang`
 --
 
+DROP TABLE IF EXISTS `barang`;
 CREATE TABLE `barang` (
   `id` int(11) NOT NULL,
   `kode` varchar(128) DEFAULT NULL,
@@ -45,9 +48,10 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id`, `kode`, `name`, `image`, `jenis`, `harga`, `stok`, `tanggal`, `user_id`) VALUES
-(17, '10/07/2021 -BG- 002', 'Boult Audio ProBass Q Over-Ear Wireless Headphone', 'images(18)2.jpg', 'Headset', 150000, 48, '2021-07-10 08:23:17', 8),
-(18, '10/07/2021 -BG- 003', 'Sound', 'images(19).jpg', 'Speaker', 200000, 20, '2021-07-10 08:29:55', 8),
-(19, '10/07/2021 -BG- 004', 'Charger Original New 20W Iphone 12', '9f2a5959-9171-457a-9a02-834e4ea940743.jpg', 'Charger', 400000, 99, '2021-07-10 08:33:54', 8);
+(17, '10/07/2021 -BG- 002', 'Boult Audio ProBass Q Over-Ear Wireless Headphone', 'images(18)2.jpg', 'Headset', 150000, 46, '2021-07-10 08:23:17', 8),
+(18, '10/07/2021 -BG- 003', 'Sound', 'images(19).jpg', 'Speaker', 200000, 18, '2021-07-10 08:29:55', 8),
+(19, '10/07/2021 -BG- 004', 'Charger Original New 20W Iphone 12', '9f2a5959-9171-457a-9a02-834e4ea940743.jpg', 'Charger', 400000, 97, '2021-07-10 08:33:54', 8),
+(20, '18/07/2021 -BG- 008', 'Earbuds White Support Distances', 'white-wireless-earbud-digital-earphones.png', 'Earbuds', 121000, 50, '2021-07-18 07:48:23', 8);
 
 -- --------------------------------------------------------
 
@@ -55,6 +59,7 @@ INSERT INTO `barang` (`id`, `kode`, `name`, `image`, `jenis`, `harga`, `stok`, `
 -- Struktur dari tabel `barang_keluar`
 --
 
+DROP TABLE IF EXISTS `barang_keluar`;
 CREATE TABLE `barang_keluar` (
   `id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
@@ -65,6 +70,7 @@ CREATE TABLE `barang_keluar` (
 --
 -- Trigger `barang_keluar`
 --
+DROP TRIGGER IF EXISTS `t__keluar`;
 DELIMITER $$
 CREATE TRIGGER `t__keluar` AFTER INSERT ON `barang_keluar` FOR EACH ROW BEGIN
 	UPDATE barang SET stok = stok - NEW.stok WHERE id = NEW.barang_id;
@@ -78,6 +84,7 @@ DELIMITER ;
 -- Struktur dari tabel `barang_masuk`
 --
 
+DROP TABLE IF EXISTS `barang_masuk`;
 CREATE TABLE `barang_masuk` (
   `id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
@@ -88,6 +95,7 @@ CREATE TABLE `barang_masuk` (
 --
 -- Trigger `barang_masuk`
 --
+DROP TRIGGER IF EXISTS `t_masuk`;
 DELIMITER $$
 CREATE TRIGGER `t_masuk` AFTER INSERT ON `barang_masuk` FOR EACH ROW BEGIN
 	UPDATE barang SET stok = stok + NEW.stok WHERE id = NEW.barang_id;
@@ -101,6 +109,7 @@ DELIMITER ;
 -- Struktur dari tabel `data_banner`
 --
 
+DROP TABLE IF EXISTS `data_banner`;
 CREATE TABLE `data_banner` (
   `id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
@@ -124,6 +133,7 @@ INSERT INTO `data_banner` (`id`, `name`, `image`, `descript`, `banner_date`, `ur
 -- Struktur dari tabel `detail_transaksi`
 --
 
+DROP TABLE IF EXISTS `detail_transaksi`;
 CREATE TABLE `detail_transaksi` (
   `id_detail` int(11) NOT NULL,
   `barang_id` int(11) NOT NULL,
@@ -134,10 +144,20 @@ CREATE TABLE `detail_transaksi` (
   `total` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   `tanggal_detail` datetime NOT NULL,
-  `image_bayar` varchar(256) NOT NULL,
+  `image_bayar` varchar(256) DEFAULT NULL,
   `penjual_id` int(11) NOT NULL,
   `transaksi_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `detail_transaksi`
+--
+
+INSERT INTO `detail_transaksi` (`id_detail`, `barang_id`, `name`, `stok`, `harga`, `image`, `total`, `status`, `tanggal_detail`, `image_bayar`, `penjual_id`, `transaksi_id`) VALUES
+(23, 18, 'Sound', 2, 200000, 'images(19).jpg', 400000, 2, '2021-07-18 16:21:54', 'letter_S.png', 8, 17),
+(24, 17, 'Boult Audio ProBass Q Over-Ear Wireless Headphone', 2, 150000, 'images(18)2.jpg', 300000, 2, '2021-07-18 16:15:34', 'letter_H1.png', 8, 17),
+(25, 20, 'Earbuds White Support Distances', 2, 121000, 'white-wireless-earbud-digital-earphones.png', 242000, 2, '2021-07-18 16:31:52', 'letter_E1.png', 8, 18),
+(26, 19, 'Charger Original New 20W Iphone 12', 2, 400000, '9f2a5959-9171-457a-9a02-834e4ea940743.jpg', 800000, 2, '2021-07-18 16:30:07', 'letter_C.png', 8, 18);
 
 -- --------------------------------------------------------
 
@@ -145,6 +165,7 @@ CREATE TABLE `detail_transaksi` (
 -- Struktur dari tabel `jenis`
 --
 
+DROP TABLE IF EXISTS `jenis`;
 CREATE TABLE `jenis` (
   `id` int(11) NOT NULL,
   `name` varchar(128) DEFAULT NULL
@@ -173,7 +194,8 @@ INSERT INTO `jenis` (`id`, `name`) VALUES
 (16, 'Charger'),
 (17, 'Headset'),
 (18, 'Speaker'),
-(19, 'Charger');
+(19, 'Charger'),
+(20, 'Earbuds 2021');
 
 -- --------------------------------------------------------
 
@@ -181,6 +203,7 @@ INSERT INTO `jenis` (`id`, `name`) VALUES
 -- Struktur dari tabel `transaksi`
 --
 
+DROP TABLE IF EXISTS `transaksi`;
 CREATE TABLE `transaksi` (
   `id` int(11) NOT NULL,
   `kode` varchar(128) NOT NULL,
@@ -200,12 +223,21 @@ CREATE TABLE `transaksi` (
   `status` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `transaksi`
+--
+
+INSERT INTO `transaksi` (`id`, `kode`, `pembeli_id`, `pembeli_name`, `pembeli_email`, `pembeli_bank`, `pembeli_rekening`, `pembeli_telp`, `penjual_id`, `penjual_name`, `penjual_bank`, `penjual_rekening`, `penjual_telp`, `total_transaksi`, `tanggal_transaksi`, `status`) VALUES
+(17, '16/07/2021 -ELC- 001', 6, 'Firman', 'firmanagebimantara@gmail.com', 'BRI', '123456789123', '6289688492288', 8, 'Bimantara', 'BNI', '1032432432653601', '6289688492283', 700000, '2021-07-18 16:21:54', 2),
+(18, '18/07/2021 -ELC- 001', 6, 'Firman', 'firmanagebimantara@gmail.com', 'BRI', '123456789123', '6289688492288', 8, 'Bimantara', 'BNI', '1032432432653601', '6289688492283', 1042000, '2021-07-18 16:31:52', 2);
+
 -- --------------------------------------------------------
 
 --
 -- Struktur dari tabel `user`
 --
 
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `name` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
@@ -228,7 +260,7 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `name`, `email`, `image`, `password`, `no_telp`, `alamat`, `role_id`, `is_active`, `date_created`, `no_rekening`, `nama_bank`) VALUES
 (1, 'Admin', 'admin@gmail.com', 'avatar.png', '$2y$10$OCvmvrtPHbClwbGjqQY.4u1s2jGquK80tMMqd.nWlDNqBaxohnJXy', '6281336787990', 'Jl Admin 221', 1, 1, 1621959515, '-', '-'),
 (6, 'Firman', 'firmanagebimantara@gmail.com', 'default.png', '$2y$10$9zXYUMUHizAe2rKqBqp51O3QnoX/KLFQB6bj7zPgHGODzTvZm3z4m', '6289688492288', 'Besuki', 3, 1, 1625844212, '123456789123', 'BRI'),
-(8, 'Bimantara', 'muhfirmanagebimantara@gmail.com', 'default.png', '$2y$10$4W7CkRAHmQW6BiSvJANvKOAHW75W3Sm/TYfidVL5XIUZe9MqSNrbG', '6289688492283', 'Situbondo', 2, 1, 1625905274, '1032432432653601', 'BNI');
+(8, 'Bimantara', 'muhfirmanagebimantara@gmail.com', '0_big.jpg', '$2y$10$4W7CkRAHmQW6BiSvJANvKOAHW75W3Sm/TYfidVL5XIUZe9MqSNrbG', '6289688492283', 'Situbondo', 2, 1, 1625905274, '1032432432653601', 'BNI');
 
 -- --------------------------------------------------------
 
@@ -236,6 +268,7 @@ INSERT INTO `user` (`id`, `name`, `email`, `image`, `password`, `no_telp`, `alam
 -- Struktur dari tabel `user_access_menu`
 --
 
+DROP TABLE IF EXISTS `user_access_menu`;
 CREATE TABLE `user_access_menu` (
   `id` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
@@ -257,6 +290,7 @@ INSERT INTO `user_access_menu` (`id`, `role_id`, `menu_id`) VALUES
 -- Struktur dari tabel `user_menu`
 --
 
+DROP TABLE IF EXISTS `user_menu`;
 CREATE TABLE `user_menu` (
   `id` int(11) NOT NULL,
   `menu` varchar(128) NOT NULL,
@@ -278,6 +312,7 @@ INSERT INTO `user_menu` (`id`, `menu`, `urutan`) VALUES
 -- Struktur dari tabel `user_role`
 --
 
+DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
   `id` int(11) NOT NULL,
   `role` varchar(128) NOT NULL
@@ -298,6 +333,7 @@ INSERT INTO `user_role` (`id`, `role`) VALUES
 -- Struktur dari tabel `user_sub_menu`
 --
 
+DROP TABLE IF EXISTS `user_sub_menu`;
 CREATE TABLE `user_sub_menu` (
   `id` int(11) NOT NULL,
   `menu_id` int(11) NOT NULL,
@@ -414,19 +450,19 @@ ALTER TABLE `user_sub_menu`
 -- AUTO_INCREMENT untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_keluar`
 --
 ALTER TABLE `barang_keluar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_masuk`
 --
 ALTER TABLE `barang_masuk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT untuk tabel `data_banner`
@@ -438,19 +474,19 @@ ALTER TABLE `data_banner`
 -- AUTO_INCREMENT untuk tabel `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
-  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT untuk tabel `jenis`
 --
 ALTER TABLE `jenis`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
