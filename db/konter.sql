@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 18 Jul 2021 pada 11.34
+-- Waktu pembuatan: 08 Agu 2021 pada 13.01
 -- Versi server: 10.4.11-MariaDB
 -- Versi PHP: 7.3.15
 
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `konter`
 --
-CREATE DATABASE IF NOT EXISTS `konter` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `konter`;
 
 -- --------------------------------------------------------
 
@@ -30,7 +28,6 @@ USE `konter`;
 -- Struktur dari tabel `barang`
 --
 
-DROP TABLE IF EXISTS `barang`;
 CREATE TABLE `barang` (
   `id` int(11) NOT NULL,
   `kode` varchar(128) DEFAULT NULL,
@@ -59,7 +56,6 @@ INSERT INTO `barang` (`id`, `kode`, `name`, `image`, `jenis`, `harga`, `stok`, `
 -- Struktur dari tabel `barang_keluar`
 --
 
-DROP TABLE IF EXISTS `barang_keluar`;
 CREATE TABLE `barang_keluar` (
   `id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
@@ -70,7 +66,6 @@ CREATE TABLE `barang_keluar` (
 --
 -- Trigger `barang_keluar`
 --
-DROP TRIGGER IF EXISTS `t__keluar`;
 DELIMITER $$
 CREATE TRIGGER `t__keluar` AFTER INSERT ON `barang_keluar` FOR EACH ROW BEGIN
 	UPDATE barang SET stok = stok - NEW.stok WHERE id = NEW.barang_id;
@@ -84,7 +79,6 @@ DELIMITER ;
 -- Struktur dari tabel `barang_masuk`
 --
 
-DROP TABLE IF EXISTS `barang_masuk`;
 CREATE TABLE `barang_masuk` (
   `id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
@@ -95,7 +89,6 @@ CREATE TABLE `barang_masuk` (
 --
 -- Trigger `barang_masuk`
 --
-DROP TRIGGER IF EXISTS `t_masuk`;
 DELIMITER $$
 CREATE TRIGGER `t_masuk` AFTER INSERT ON `barang_masuk` FOR EACH ROW BEGIN
 	UPDATE barang SET stok = stok + NEW.stok WHERE id = NEW.barang_id;
@@ -109,7 +102,6 @@ DELIMITER ;
 -- Struktur dari tabel `data_banner`
 --
 
-DROP TABLE IF EXISTS `data_banner`;
 CREATE TABLE `data_banner` (
   `id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
@@ -133,7 +125,6 @@ INSERT INTO `data_banner` (`id`, `name`, `image`, `descript`, `banner_date`, `ur
 -- Struktur dari tabel `detail_transaksi`
 --
 
-DROP TABLE IF EXISTS `detail_transaksi`;
 CREATE TABLE `detail_transaksi` (
   `id_detail` int(11) NOT NULL,
   `barang_id` int(11) NOT NULL,
@@ -155,8 +146,8 @@ CREATE TABLE `detail_transaksi` (
 
 INSERT INTO `detail_transaksi` (`id_detail`, `barang_id`, `name`, `stok`, `harga`, `image`, `total`, `status`, `tanggal_detail`, `image_bayar`, `penjual_id`, `transaksi_id`) VALUES
 (23, 18, 'Sound', 2, 200000, 'images(19).jpg', 400000, 2, '2021-07-18 16:21:54', 'letter_S.png', 8, 17),
-(24, 17, 'Boult Audio ProBass Q Over-Ear Wireless Headphone', 2, 150000, 'images(18)2.jpg', 300000, 2, '2021-07-18 16:15:34', 'letter_H1.png', 8, 17),
-(25, 20, 'Earbuds White Support Distances', 2, 121000, 'white-wireless-earbud-digital-earphones.png', 242000, 2, '2021-07-18 16:31:52', 'letter_E1.png', 8, 18),
+(24, 17, 'Boult Audio ProBass Q Over-Ear Wireless Headphone', 2, 150000, 'images(18)2.jpg', 300000, 2, '2021-08-08 16:15:34', 'letter_H1.png', 8, 17),
+(25, 20, 'Earbuds White Support Distances', 2, 121000, 'white-wireless-earbud-digital-earphones.png', 242000, 2, '2021-08-08 16:31:52', 'letter_E1.png', 8, 18),
 (26, 19, 'Charger Original New 20W Iphone 12', 2, 400000, '9f2a5959-9171-457a-9a02-834e4ea940743.jpg', 800000, 2, '2021-07-18 16:30:07', 'letter_C.png', 8, 18);
 
 -- --------------------------------------------------------
@@ -165,7 +156,6 @@ INSERT INTO `detail_transaksi` (`id_detail`, `barang_id`, `name`, `stok`, `harga
 -- Struktur dari tabel `jenis`
 --
 
-DROP TABLE IF EXISTS `jenis`;
 CREATE TABLE `jenis` (
   `id` int(11) NOT NULL,
   `name` varchar(128) DEFAULT NULL
@@ -203,7 +193,6 @@ INSERT INTO `jenis` (`id`, `name`) VALUES
 -- Struktur dari tabel `transaksi`
 --
 
-DROP TABLE IF EXISTS `transaksi`;
 CREATE TABLE `transaksi` (
   `id` int(11) NOT NULL,
   `kode` varchar(128) NOT NULL,
@@ -237,7 +226,6 @@ INSERT INTO `transaksi` (`id`, `kode`, `pembeli_id`, `pembeli_name`, `pembeli_em
 -- Struktur dari tabel `user`
 --
 
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `name` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
@@ -260,7 +248,9 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `name`, `email`, `image`, `password`, `no_telp`, `alamat`, `role_id`, `is_active`, `date_created`, `no_rekening`, `nama_bank`) VALUES
 (1, 'Admin', 'admin@gmail.com', 'avatar.png', '$2y$10$OCvmvrtPHbClwbGjqQY.4u1s2jGquK80tMMqd.nWlDNqBaxohnJXy', '6281336787990', 'Jl Admin 221', 1, 1, 1621959515, '-', '-'),
 (6, 'Firman', 'firmanagebimantara@gmail.com', 'default.png', '$2y$10$9zXYUMUHizAe2rKqBqp51O3QnoX/KLFQB6bj7zPgHGODzTvZm3z4m', '6289688492288', 'Besuki', 3, 1, 1625844212, '123456789123', 'BRI'),
-(8, 'Bimantara', 'muhfirmanagebimantara@gmail.com', '0_big.jpg', '$2y$10$4W7CkRAHmQW6BiSvJANvKOAHW75W3Sm/TYfidVL5XIUZe9MqSNrbG', '6289688492283', 'Situbondo', 2, 1, 1625905274, '1032432432653601', 'BNI');
+(8, 'Bimantara', 'muhfirmanagebimantara@gmail.com', '0_big.jpg', '$2y$10$4W7CkRAHmQW6BiSvJANvKOAHW75W3Sm/TYfidVL5XIUZe9MqSNrbG', '6289688492283', 'Situbondo', 2, 1, 1625905274, '1032432432653601', 'BNI'),
+(9, 'penjual1', 'penjual1@gmail.com', 'default.png', '$2y$10$k8mYo/0KAoEce6QaCeY.oeK5kCk6L4sG2XDcspncyKt26tPyRL0qy', '6287566234111', 'Jl Kutai No 9A Tamanbaru Banyuwangi', 2, 1, 1628405548, '8888888', 'BRI'),
+(10, 'pembeli1', 'pembeli1@gmail.com', 'default.png', '$2y$10$NKMyNBWRl0dqu2OA26fhjui5338oNhTsqe6w26DzkW9jSyrtXy01q', '6285554112890', 'Jl Kutai No 9A Tamanbaru Banyuwangi', 3, 1, 1628405651, '', '');
 
 -- --------------------------------------------------------
 
@@ -268,7 +258,6 @@ INSERT INTO `user` (`id`, `name`, `email`, `image`, `password`, `no_telp`, `alam
 -- Struktur dari tabel `user_access_menu`
 --
 
-DROP TABLE IF EXISTS `user_access_menu`;
 CREATE TABLE `user_access_menu` (
   `id` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
@@ -290,7 +279,6 @@ INSERT INTO `user_access_menu` (`id`, `role_id`, `menu_id`) VALUES
 -- Struktur dari tabel `user_menu`
 --
 
-DROP TABLE IF EXISTS `user_menu`;
 CREATE TABLE `user_menu` (
   `id` int(11) NOT NULL,
   `menu` varchar(128) NOT NULL,
@@ -312,7 +300,6 @@ INSERT INTO `user_menu` (`id`, `menu`, `urutan`) VALUES
 -- Struktur dari tabel `user_role`
 --
 
-DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
   `id` int(11) NOT NULL,
   `role` varchar(128) NOT NULL
@@ -333,7 +320,6 @@ INSERT INTO `user_role` (`id`, `role`) VALUES
 -- Struktur dari tabel `user_sub_menu`
 --
 
-DROP TABLE IF EXISTS `user_sub_menu`;
 CREATE TABLE `user_sub_menu` (
   `id` int(11) NOT NULL,
   `menu_id` int(11) NOT NULL,
@@ -456,13 +442,13 @@ ALTER TABLE `barang`
 -- AUTO_INCREMENT untuk tabel `barang_keluar`
 --
 ALTER TABLE `barang_keluar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_masuk`
 --
 ALTER TABLE `barang_masuk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT untuk tabel `data_banner`
@@ -492,7 +478,7 @@ ALTER TABLE `transaksi`
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `user_access_menu`
