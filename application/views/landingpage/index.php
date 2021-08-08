@@ -52,6 +52,20 @@
             </h3>
         </div>
         <?= $this->session->flashdata('message') ?>
+        <form action="<?= base_url('pembeli'); ?>" method="post">
+            <div class="form-row avoid-this">
+                <div class="form-group col-md-5">
+                    <label for="cari">Cari :</label>
+                    <input type="text" name="cari" class="form-control" value="<?= set_value('cari') ?>">
+                    <?= form_error('cari', '<small class="text-danger">', '</small>'); ?>
+                </div>
+                <div class="form-group" style="margin-top: 30px;">
+                    <button type="submit" name="filter" class="btn btn-info btn-round" data-toggle="tooltip" data-placement="top" title="Cari">
+                        Cari
+                    </button>
+                </div>
+            </div>
+        </form>
         <div class="row isotope-grid">
             <?php foreach ($data_produk as $datprk) : ?>
                 <?php $no = 1; ?>
