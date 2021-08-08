@@ -21,7 +21,7 @@
                                     <div class="form-group">
                                         <div class="input-group mb-2">
                                             <div class="input-group-prepend">
-                                                <div class="input-group-text">@</div>
+                                                <div class="input-group-text">Email</div>
                                             </div>
                                             <input type="email" class="form-control form-control-user" name="email" id="email" placeholder="Masukkan Email">
                                         </div>
@@ -30,7 +30,7 @@
                                     <div class="form-group">
                                         <div class="input-group mb-2">
                                             <div class="input-group-prepend">
-                                                <div class="input-group-text"><i class="fa fa-key"></i></div>
+                                                <div class="input-group-text">Password</div>
                                             </div>
                                             <input type="password" class="form-control form-control-user" name="password" id="password" placeholder="Masukkan Password">
                                         </div>

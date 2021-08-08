@@ -12,16 +12,60 @@ class Admin extends CI_Controller
     }
     public function index()
     {
-        $data['title'] = 'Dashboard Admin';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-        $data['transaksi'] = $this->dam->getPendapatan();
-        $data['transaction'] = $this->dam->transaction();
-        $data['countTrans'] = $this->dam->getCountPendapatan();
-        $this->load->view('templates/admin/header', $data);
-        $this->load->view('templates/admin/sidebar', $data);
-        $this->load->view('templates/admin/navbar', $data);
-        $this->load->view('admin/index', $data);
-        $this->load->view('templates/admin/footer', $data);
+        $date1 = "";
+        $date2 = "";
+        if ($this->input->post('start_date') && $this->input->post('end_date') != NULL) {
+            $date1 = $this->input->post('start_date');
+            $date2 = $this->input->post('end_date');
+            $this->session->set_userdata(array("start_date" => $date1));
+            $this->session->set_userdata(array("end_date" => $date2));
+        } else {
+            if ($this->session->userdata('start_date') && $this->session->userdata('end_date') != NULL) {
+                $date1 = $this->session->userdata('start_date');
+                $date2 = $this->session->userdata('end_date');
+            }
+        }
+
+        $data['from'] = $date1;
+        $data['to'] = $date2;
+
+        $this->form_validation->set_rules('start_date', 'Tanggal Mulai', 'required|trim', [
+            'required' => '%s tidak boleh kosong !'
+        ]);
+        $this->form_validation->set_rules('end_date', 'Tanggal Akhir', 'required|trim', [
+            'required' => '%s tidak boleh kosong !'
+        ]);
+
+        if ($this->input->post('start_date') && $this->input->post('end_date')) {
+            $data['title'] = 'Dashboard Admin';
+            $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+            $data['transaksi'] = $this->dam->getPendapatan();
+            $data['transaction'] = $this->dam->getRangeDate($date1, $date2);
+            $data['countTrans'] = $this->dam->getCountPendapatan();
+
+            // echo "<pre>";
+            // print_r($data['transaction']);
+            // echo "</pre>";
+            // die;
+
+            $this->load->view('templates/admin/header', $data);
+            $this->load->view('templates/admin/sidebar', $data);
+            $this->load->view('templates/admin/navbar', $data);
+            $this->load->view('admin/index', $data);
+            $this->load->view('templates/admin/footer', $data);
+        } else {
+            $data['title'] = 'Dashboard Admin';
+            $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+            $data['transaksi'] = $this->dam->getPendapatan();
+            $data['transaction'] = $this->dam->transaction();
+            $data['countTrans'] = $this->dam->getCountPendapatan();
+
+            $this->load->view('templates/admin/header', $data);
+            $this->load->view('templates/admin/sidebar', $data);
+            $this->load->view('templates/admin/navbar', $data);
+            $this->load->view('admin/index', $data);
+            $this->load->view('templates/admin/footer', $data);
+        }
     }
 
     //Data Users

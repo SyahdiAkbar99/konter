@@ -12,20 +12,61 @@ class Penjual extends CI_Controller
     }
     public function index()
     {
-        $data['title'] = 'Dashboard Penjual';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-        $data['pendapatan'] = $this->dpj->getPendapatan($data['user']['id']);
-        $data['transaksi'] = $this->dpj->getCountPendapatan($data['user']['id']);
-        $data['grafik'] = $this->dpj->transaction($data['user']['id']);
-        // echo '<pre>';
-        // print_r($data['transaksi']);
-        // echo '</pre>';
-        // die;
-        $this->load->view('templates/penjual/header', $data);
-        $this->load->view('templates/penjual/sidebar', $data);
-        $this->load->view('templates/penjual/navbar', $data);
-        $this->load->view('penjual/index', $data);
-        $this->load->view('templates/penjual/footer', $data);
+        $date1 = "";
+        $date2 = "";
+        if ($this->input->post('start_date') && $this->input->post('end_date') != NULL) {
+            $date1 = $this->input->post('start_date');
+            $date2 = $this->input->post('end_date');
+            $this->session->set_userdata(array("start_date" => $date1));
+            $this->session->set_userdata(array("end_date" => $date2));
+        } else {
+            if ($this->session->userdata('start_date') && $this->session->userdata('end_date') != NULL) {
+                $date1 = $this->session->userdata('start_date');
+                $date2 = $this->session->userdata('end_date');
+            }
+        }
+
+        $data['from'] = $date1;
+        $data['to'] = $date2;
+
+        $this->form_validation->set_rules('start_date', 'Tanggal Mulai', 'required|trim', [
+            'required' => '%s tidak boleh kosong !'
+        ]);
+        $this->form_validation->set_rules('end_date', 'Tanggal Akhir', 'required|trim', [
+            'required' => '%s tidak boleh kosong !'
+        ]);
+
+        if ($this->input->post('start_date') && $this->input->post('end_date')) {
+            $data['title'] = 'Dashboard Penjual';
+            $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+            $data['pendapatan'] = $this->dpj->getPendapatan($data['user']['id']);
+            $data['transaksi'] = $this->dpj->getCountPendapatan($data['user']['id']);
+            $data['grafik'] = $this->dpj->getRangeDate($date1, $date2, $data['user']['id']);
+            // echo '<pre>';
+            // print_r($data['transaksi']);
+            // echo '</pre>';
+            // die;
+            $this->load->view('templates/penjual/header', $data);
+            $this->load->view('templates/penjual/sidebar', $data);
+            $this->load->view('templates/penjual/navbar', $data);
+            $this->load->view('penjual/index', $data);
+            $this->load->view('templates/penjual/footer', $data);
+        } else {
+            $data['title'] = 'Dashboard Penjual';
+            $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+            $data['pendapatan'] = $this->dpj->getPendapatan($data['user']['id']);
+            $data['transaksi'] = $this->dpj->getCountPendapatan($data['user']['id']);
+            $data['grafik'] = $this->dpj->transaction($data['user']['id']);
+            // echo '<pre>';
+            // print_r($data['transaksi']);
+            // echo '</pre>';
+            // die;
+            $this->load->view('templates/penjual/header', $data);
+            $this->load->view('templates/penjual/sidebar', $data);
+            $this->load->view('templates/penjual/navbar', $data);
+            $this->load->view('penjual/index', $data);
+            $this->load->view('templates/penjual/footer', $data);
+        }
     }
 
     // fungsi membuat kode pemesanan sesuai tanggal

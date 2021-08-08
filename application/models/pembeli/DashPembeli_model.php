@@ -78,6 +78,23 @@ class DashPembeli_model extends CI_Model
         return $this->db->query($query)->row_array();
     }
 
+    public function getRangeDate($date1, $date2, $id_user)
+    {
+        if (!empty($date1) && !empty($date2)) {
+            $query = "SELECT * FROM detail_transaksi WHERE detail_transaksi.penjual_id AND detail_transaksi.tanggal_detail BETWEEN '$date1' and '$date2'";
+            return $this->db->query($query)->result();
+        } else {
+            $query = "SELECT * FROM detail_transaksi WHERE detail_transaksi.penjual_id";
+            return $this->db->query($query)->result();
+        }
+    }
+
+    public function getBaseSearch($datainput, $limit, $start)
+    {
+        $query = "SELECT * FROM barang WHERE barang.name = '$datainput' ORDER BY barang.id LIMIT $limit";
+        return $this->db->query($query)->result_array();
+    }
+
 
 
 

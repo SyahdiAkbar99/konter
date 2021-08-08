@@ -17,8 +17,9 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Pendapatan
                                 <?php foreach ($transaksi as $row) : ?>
-                                    Pendapatan (<?= $row['bulan']; ?>)
+                                    (<?= $row['bulan']; ?>)
                                 <?php endforeach; ?>
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -75,6 +76,23 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
+                    <form action="<?= base_url('admin'); ?>" method="post">
+                        <div class="form-row avoid-this">
+                            <div class="form-group col-md-5">
+                                <label for="from-date">Dari :</label>
+                                <input type="date" name="start_date" class="form-control" value="<?= $from; ?>">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label for="to-date">Ke :</label>
+                                <input type="date" name="end_date" class="form-control" value="<?= $to; ?>">
+                            </div>
+                            <div class="form-group col-md-2" style="margin-top: 31px;">
+                                <button type="submit" name="filter" class="btn btn-info btn-round" data-toggle="tooltip" data-placement="top" title="Cari">
+                                    Cari
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                     <div class="chart-area">
 
                         <canvas id="chartAdmin"></canvas>

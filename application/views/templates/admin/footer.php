@@ -116,8 +116,8 @@
             labels: [
                 <?php
                 if (count($transaction) > 0) {
-                    foreach ($transaction as $data) {
-                        echo "'" . $data->name . "',";
+                    foreach ($transaction as $row) {
+                        echo "'" . $row->name . "',";
                     }
                 }
                 ?>
@@ -192,7 +192,7 @@
                 position: 'bottom',
                 labels: {
                     fontColor: "#000080",
-                }
+                },
             },
             tooltips: {
                 backgroundColor: "rgb(255,255,255)",

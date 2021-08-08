@@ -13,55 +13,111 @@ class Pembeli extends CI_Controller
 
     public function index()
     {
-        $data['title'] = 'Home';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $this->form_validation->set_rules('cari', 'Cari', 'required|trim', [
+            'required' => '%s tidak boleh kosong',
+        ]);
+        if ($this->input->post('cari')) {
+            $data['title'] = 'Home';
+            $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        $data['data_banner'] = $this->dpm->data_banner();
-        $data['data_product'] = $this->dpm->data_barang();
+            $data['data_banner'] = $this->dpm->data_banner();
+            //config
+            $config['base_url'] = 'http://localhost/konter/Pembeli/index';
+            $config['total_rows'] = $this->dpm->countAllProduk();
+            $config['per_page'] = 8;
 
-        //config
-        $config['base_url'] = 'http://localhost/konter/Pembeli/index';
-        $config['total_rows'] = $this->dpm->countAllProduk();
-        $config['per_page'] = 8;
+            //styling
+            $config['full_tag_open'] = '<nav><ul class="pagination justify-content-center">';
+            $config['full_tag_close'] = '</ul></nav>';
 
-        //styling
-        $config['full_tag_open'] = '<nav><ul class="pagination justify-content-center">';
-        $config['full_tag_close'] = '</ul></nav>';
+            $config['first_link'] = 'First';
+            $config['first_tag_open'] = '<li class="page-item">';
+            $config['first_tag_close'] = '</li>';
 
-        $config['first_link'] = 'First';
-        $config['first_tag_open'] = '<li class="page-item">';
-        $config['first_tag_close'] = '</li>';
+            $config['last_link'] = 'Last';
+            $config['last_tag_open'] = '<li class="page-item">';
+            $config['last_tag_close'] = '</li>';
 
-        $config['last_link'] = 'Last';
-        $config['last_tag_open'] = '<li class="page-item">';
-        $config['last_tag_close'] = '</li>';
+            $config['next_link'] = '&raquo';
+            $config['next_tag_open'] = '<li class="page-item">';
+            $config['next_tag_close'] = '</li>';
 
-        $config['next_link'] = '&raquo';
-        $config['next_tag_open'] = '<li class="page-item">';
-        $config['next_tag_close'] = '</li>';
+            $config['prev_link'] = '&laquo';
+            $config['prev_tag_open'] = '<li class="page-item">';
+            $config['prev_tag_close'] = '</li>';
 
-        $config['prev_link'] = '&laquo';
-        $config['prev_tag_open'] = '<li class="page-item">';
-        $config['prev_tag_close'] = '</li>';
+            $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="#">';
+            $config['cur_tag_close'] = '</a></li>';
 
-        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="#">';
-        $config['cur_tag_close'] = '</a></li>';
+            $config['num_tag_open'] = '<li class="page-item">';
+            $config['num_tag_close'] = '</li>';
 
-        $config['num_tag_open'] = '<li class="page-item">';
-        $config['num_tag_close'] = '</li>';
+            $config['attributes'] = array('class' => 'page-link');
 
-        $config['attributes'] = array('class' => 'page-link');
+            //initilize
+            $this->pagination->initialize($config);
 
-        //initilize
-        $this->pagination->initialize($config);
+            $data['start'] = $this->uri->segment(3);
+            $data['data_produk'] = $this->dpm->getBaseSearch($this->input->post('cari'), $config['per_page'], $data['start']);
+            // echo "<pre>";
+            // print_r($data['data_produk']);
+            // die;
+            // echo "</pre>";
+            $this->load->view('templates/pembeli/header', $data);
+            $this->load->view('templates/pembeli/navbar', $data);
+            $this->load->view('pembeli/index', $data);
+            $this->load->view('templates/pembeli/footer', $data);
+        } else {
+            $data['title'] = 'Home';
+            $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        $data['start'] = $this->uri->segment(3);
-        $data['data_produk'] = $this->dpm->getProduk($config['per_page'], $data['start']);
+            $data['data_banner'] = $this->dpm->data_banner();
+            // $data['data_product'] = $this->dpm->data_barang();
 
-        $this->load->view('templates/pembeli/header', $data);
-        $this->load->view('templates/pembeli/navbar', $data);
-        $this->load->view('pembeli/index', $data);
-        $this->load->view('templates/pembeli/footer', $data);
+            //config
+            $config['base_url'] = 'http://localhost/konter/Pembeli/index';
+            $config['total_rows'] = $this->dpm->countAllProduk();
+            $config['per_page'] = 8;
+
+            //styling
+            $config['full_tag_open'] = '<nav><ul class="pagination justify-content-center">';
+            $config['full_tag_close'] = '</ul></nav>';
+
+            $config['first_link'] = 'First';
+            $config['first_tag_open'] = '<li class="page-item">';
+            $config['first_tag_close'] = '</li>';
+
+            $config['last_link'] = 'Last';
+            $config['last_tag_open'] = '<li class="page-item">';
+            $config['last_tag_close'] = '</li>';
+
+            $config['next_link'] = '&raquo';
+            $config['next_tag_open'] = '<li class="page-item">';
+            $config['next_tag_close'] = '</li>';
+
+            $config['prev_link'] = '&laquo';
+            $config['prev_tag_open'] = '<li class="page-item">';
+            $config['prev_tag_close'] = '</li>';
+
+            $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="#">';
+            $config['cur_tag_close'] = '</a></li>';
+
+            $config['num_tag_open'] = '<li class="page-item">';
+            $config['num_tag_close'] = '</li>';
+
+            $config['attributes'] = array('class' => 'page-link');
+
+            //initilize
+            $this->pagination->initialize($config);
+
+            $data['start'] = $this->uri->segment(3);
+            $data['data_produk'] = $this->dpm->getProduk($config['per_page'], $data['start']);
+
+            $this->load->view('templates/pembeli/header', $data);
+            $this->load->view('templates/pembeli/navbar', $data);
+            $this->load->view('pembeli/index', $data);
+            $this->load->view('templates/pembeli/footer', $data);
+        }
     }
 
     // fungsi membuat kode pemesanan sesuai tanggal

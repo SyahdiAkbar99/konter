@@ -116,75 +116,147 @@ class Auth extends CI_Controller
         }
         // ========================================
 
-        $this->form_validation->set_rules('name', 'Name', 'required|trim');
-        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[user.email]', [
-            'is_unique' => '%s sudah didaftarkan',
-        ]);
-        $this->form_validation->set_rules('password1', 'Password', 'required|trim|min_length[6]|matches[password2]');
-        $this->form_validation->set_rules('password2', 'Ulangi Password', 'required|trim|min_length[6]|matches[password1]');
-        $this->form_validation->set_rules('no_telp', 'No Telpon', 'required|trim|min_length[10]|max_length[14]|numeric');
-        $this->form_validation->set_rules('alamat', 'Alamat', 'required|trim');
-        $this->form_validation->set_rules('no_rekening', 'No Rekening', 'required|trim');
-        $this->form_validation->set_rules('nama_bank', 'Nama Bank', 'required|trim');
+        if ($this->input->post('role_id') == 2) {
+            $this->form_validation->set_rules('name', 'Name', 'required|trim');
+            $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[user.email]', [
+                'is_unique' => '%s sudah didaftarkan',
+            ]);
+            $this->form_validation->set_rules('password1', 'Password', 'required|trim|min_length[6]|matches[password2]');
+            $this->form_validation->set_rules('password2', 'Ulangi Password', 'required|trim|min_length[6]|matches[password1]');
+            $this->form_validation->set_rules('no_telp', 'No Telpon', 'required|trim|min_length[10]|max_length[14]|numeric');
+            $this->form_validation->set_rules('alamat', 'Alamat', 'required|trim');
+            $this->form_validation->set_rules('no_rekening', 'No Rekening', 'required|trim');
+            $this->form_validation->set_rules('nama_bank', 'Nama Bank', 'required|trim');
 
-        if ($this->form_validation->run() == false) {
-            $data['title'] = 'Registrasi';
-            $data['role_id'] = $this->db->get('user_role')->result_array();
-            $this->load->view('templates/auth/header', $data);
-            $this->load->view('auth/registrasi', $data);
-            $this->load->view('templates/auth/footer', $data);
-        } else {
-            $data = [
-                'name' => htmlspecialchars($this->input->post('name', true)),
-                'email' => htmlspecialchars($this->input->post('email', true)),
-                'image' => 'default.png',
-                'password' => password_hash(htmlspecialchars($this->input->post('password1')), PASSWORD_DEFAULT),
-                'no_telp' => htmlspecialchars('62' . $this->input->post('no_telp')),
-                'alamat' => htmlspecialchars($this->input->post('alamat')),
-                'role_id' => htmlspecialchars($this->input->post('role_id')),
-                'is_active' => 1,
-                'date_created' => time(),
-                'no_rekening' => htmlspecialchars($this->input->post('no_rekening')),
-                'nama_bank' => htmlspecialchars($this->input->post('nama_bank')),
-            ];
-            $true = $this->db->insert('user', $data);
+            if ($this->form_validation->run() == false) {
+                $data['title'] = 'Registrasi';
+                $data['role_id'] = $this->db->get('user_role')->result_array();
+                $this->load->view('templates/auth/header', $data);
+                $this->load->view('auth/registrasi', $data);
+                $this->load->view('templates/auth/footer', $data);
+            } else {
+                $data = [
+                    'name' => htmlspecialchars($this->input->post('name', true)),
+                    'email' => htmlspecialchars($this->input->post('email', true)),
+                    'image' => 'default.png',
+                    'password' => password_hash(htmlspecialchars($this->input->post('password1')), PASSWORD_DEFAULT),
+                    'no_telp' => htmlspecialchars('62' . $this->input->post('no_telp')),
+                    'alamat' => htmlspecialchars($this->input->post('alamat')),
+                    'role_id' => htmlspecialchars($this->input->post('role_id')),
+                    'is_active' => 1,
+                    'date_created' => time(),
+                    'no_rekening' => htmlspecialchars($this->input->post('no_rekening')),
+                    'nama_bank' => htmlspecialchars($this->input->post('nama_bank')),
+                ];
+                $true = $this->db->insert('user', $data);
 
-            // siapkan tokenisasi
+                // siapkan tokenisasi
 
-            // $token = base64_encode(random_bytes(32));
-            // $user_token = [
-            //     'email' => $email,
-            //     'token' => $token,
-            //     'date_created' => time(),
-            // ];
-            // $true = $this->db->insert('user', $data);
-            // $this->db->insert('user_token', $user_token);
+                // $token = base64_encode(random_bytes(32));
+                // $user_token = [
+                //     'email' => $email,
+                //     'token' => $token,
+                //     'date_created' => time(),
+                // ];
+                // $true = $this->db->insert('user', $data);
+                // $this->db->insert('user_token', $user_token);
 
 
-            // $this->_sendEmail($token, 'verify');
+                // $this->_sendEmail($token, 'verify');
 
-            if ($true == true) {
-                $this->session->set_flashdata(
-                    'message',
-                    '<div class="alert alert-success mx-5" role="alert">
+                if ($true == true) {
+                    $this->session->set_flashdata(
+                        'message',
+                        '<div class="alert alert-success mx-5" role="alert">
                     Akun anda sudah terdaftar!
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                 </div>'
-                );
-                redirect('Auth');
-            } else {
-                $this->session->set_flashdata(
-                    'message',
-                    '<div class="alert alert-danger mx-5" role="alert">
+                    );
+                    redirect('Auth');
+                } else {
+                    $this->session->set_flashdata(
+                        'message',
+                        '<div class="alert alert-danger mx-5" role="alert">
                     Maaf Akun anda gagal didaftarkan !
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                 </div>'
-                );
-                redirect('Auth');
+                    );
+                    redirect('Auth');
+                }
+            }
+        } else {
+            $this->form_validation->set_rules('name', 'Name', 'required|trim');
+            $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[user.email]', [
+                'is_unique' => '%s sudah didaftarkan',
+            ]);
+            $this->form_validation->set_rules('password1', 'Password', 'required|trim|min_length[6]|matches[password2]');
+            $this->form_validation->set_rules('password2', 'Ulangi Password', 'required|trim|min_length[6]|matches[password1]');
+            $this->form_validation->set_rules('no_telp', 'No Telpon', 'required|trim|min_length[10]|max_length[14]|numeric');
+            $this->form_validation->set_rules('alamat', 'Alamat', 'required|trim');
+
+            if ($this->form_validation->run() == false) {
+                $data['title'] = 'Registrasi';
+                $data['role_id'] = $this->db->get('user_role')->result_array();
+                $this->load->view('templates/auth/header', $data);
+                $this->load->view('auth/registrasi', $data);
+                $this->load->view('templates/auth/footer', $data);
+            } else {
+                $data = [
+                    'name' => htmlspecialchars($this->input->post('name', true)),
+                    'email' => htmlspecialchars($this->input->post('email', true)),
+                    'image' => 'default.png',
+                    'password' => password_hash(htmlspecialchars($this->input->post('password1')), PASSWORD_DEFAULT),
+                    'no_telp' => htmlspecialchars('62' . $this->input->post('no_telp')),
+                    'alamat' => htmlspecialchars($this->input->post('alamat')),
+                    'role_id' => htmlspecialchars($this->input->post('role_id')),
+                    'is_active' => 1,
+                    'date_created' => time(),
+                    'no_rekening' => htmlspecialchars($this->input->post('no_rekening')),
+                    'nama_bank' => htmlspecialchars($this->input->post('nama_bank')),
+                ];
+                $true = $this->db->insert('user', $data);
+
+                // siapkan tokenisasi
+
+                // $token = base64_encode(random_bytes(32));
+                // $user_token = [
+                //     'email' => $email,
+                //     'token' => $token,
+                //     'date_created' => time(),
+                // ];
+                // $true = $this->db->insert('user', $data);
+                // $this->db->insert('user_token', $user_token);
+
+
+                // $this->_sendEmail($token, 'verify');
+
+                if ($true == true) {
+                    $this->session->set_flashdata(
+                        'message',
+                        '<div class="alert alert-success mx-5" role="alert">
+                    Akun anda sudah terdaftar!
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>'
+                    );
+                    redirect('Auth');
+                } else {
+                    $this->session->set_flashdata(
+                        'message',
+                        '<div class="alert alert-danger mx-5" role="alert">
+                    Maaf Akun anda gagal didaftarkan !
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>'
+                    );
+                    redirect('Auth');
+                }
             }
         }
     }

@@ -78,4 +78,15 @@ class DashPenjual_model extends CI_Model
                      JOIN transaksi ON detail_transaksi.transaksi_id = transaksi.id WHERE detail_transaksi.penjual_id = $id";
         return $this->db->query($query)->result_array();
     }
+
+    public function getRangeDate($date1, $date2, $id_user)
+    {
+        if (!empty($date1) && !empty($date2)) {
+            $query = "SELECT * FROM detail_transaksi WHERE detail_transaksi.penjual_id = $id_user AND detail_transaksi.tanggal_detail BETWEEN '$date1' and '$date2'";
+            return $this->db->query($query)->result();
+        } else {
+            $query = "SELECT * FROM detail_transaksi WHERE detail_transaksi.penjual_id = $id_user";
+            return $this->db->query($query)->result();
+        }
+    }
 }

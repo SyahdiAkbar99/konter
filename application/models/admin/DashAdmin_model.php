@@ -60,6 +60,19 @@ class DashAdmin_model extends CI_Model
         return $getPendapatan;
     }
 
+    //------ Get Filter sesuai tanggal syncronos
+    public function getRangeDate($date1, $date2)
+    {
+        if (!empty($date1) && !empty($date2)) {
+            $query = "SELECT * FROM detail_transaksi WHERE detail_transaksi.tanggal_detail BETWEEN '$date1' and '$date2'";
+            return $this->db->query($query)->result();
+        } else {
+            $query = "SELECT * FROM detail_transaksi";
+            return $this->db->query($query)->result();
+        }
+    }
+    //------ Get Filter sesuai tanggal syncronos
+
 
 
 
