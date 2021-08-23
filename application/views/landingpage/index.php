@@ -24,6 +24,34 @@
                                     Beli Sekarang
                                 </a>
                             </div>
+                            <div class="row justify-content-center">
+                                <div class="col-lg-6 col-lg-offset-6">
+                                    <div class="card mt-5">
+                                        <div class="card-header bg-primary">
+                                            <h4>Account User</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-12 mb-3">
+                                                    Admin
+                                                    Email : admin@gmail.com <br>
+                                                    Pwd : 123456
+                                                </div>
+                                                <div class="col-lg-12 mb-3">
+                                                    Penjual
+                                                    Email : muhfirmanagebimantara@gmail.com <br>
+                                                    Pwd : 220500
+                                                </div>
+                                                <div class="col-lg-12 mb-3">
+                                                    Pembeli
+                                                    Email : firmanagebimantara@gmail.com <br>
+                                                    Pwd : 220500
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
